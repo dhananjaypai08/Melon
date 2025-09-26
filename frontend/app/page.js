@@ -1,6 +1,11 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
+
+const RaspberryPiScene = dynamic(() => import('../components/RaspberryPiScene'), {
+  ssr: false,
+});
 
 const featureCards = [
   {
@@ -142,9 +147,19 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            <div className={`relative mx-auto w-full max-w-[480px] transition-all duration-700 ${isMounted ? 'translate-y-0 opacity-100 delay-150' : 'translate-y-6 opacity-0'}`}>
-              <div className="absolute -inset-6 -z-10 rounded-[36px] bg-gradient-to-br from-purple-500/30 via-violet-500/30 to-indigo-500/30 blur-2xl"></div>
-              <div className="relative overflow-hidden rounded-[32px] border border-white/15 bg-white/[0.06] p-6 backdrop-blur-xl shadow-[0_45px_80px_-30px_rgba(76,29,149,0.45)]">
+            <div className={`relative mx-auto w-full max-w-[520px] space-y-8 transition-all duration-700 ${isMounted ? 'translate-y-0 opacity-100 delay-150' : 'translate-y-6 opacity-0'}`}>
+              <div className="relative overflow-hidden rounded-[32px] border border-white/15 bg-white/[0.07] p-6 backdrop-blur-xl shadow-[0_45px_80px_-30px_rgba(76,29,149,0.45)]">
+                <div className="absolute -inset-4 -z-10 rounded-[40px] bg-gradient-to-br from-purple-500/25 via-violet-500/20 to-indigo-500/20 blur-2xl"></div>
+                <div className="mb-6 flex items-center justify-between text-xs uppercase tracking-[0.35em] text-white/40">
+                  <span>Hardware spotlight</span>
+                  <span>Raspberry Pi rig</span>
+                </div>
+                <div className="relative h-[360px] w-full overflow-hidden rounded-[24px] border border-white/10 bg-gradient-to-tr from-[#111d30] via-[#0d1625] to-[#151f35]">
+                  <RaspberryPiScene />
+                </div>
+              </div>
+
+              <div className="relative overflow-hidden rounded-[32px] border border-white/15 bg-white/[0.06] p-6 backdrop-blur-xl shadow-[0_35px_65px_-25px_rgba(76,29,149,0.45)]">
                 <div className="mb-6 flex items-center justify-between text-xs uppercase tracking-[0.35em] text-white/40">
                   <span>Verification preview</span>
                   <span>01: Proof sheet</span>

@@ -1,204 +1,335 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+const featureCards = [
+  {
+    title: 'Hardware fingerprints',
+    description:
+      'Bind every capture to the device that took it with secure attestation data protected on-chain.',
+    icon: '🔐',
+  },
+  {
+    title: 'Realtime authenticity',
+    description:
+      'Upload a photo and receive cryptographic validation in seconds—no manual review required.',
+    icon: '⚡',
+  },
+  {
+    title: 'Tamper alarms',
+    description:
+      'Spot stripping, edits, and recycled metadata instantly with our integrity heuristics.',
+    icon: '🛡️',
+  },
+  {
+    title: 'Portable proof badges',
+    description:
+      'Share verifiable proof metadata with marketplaces, newsrooms, or legal workflows.',
+    icon: '🎯',
+  },
+];
+
+const verificationSteps = [
+  {
+    title: 'Drop in your photo',
+    description: 'Select the original image directly from your camera roll or device storage.',
+    action: 'Upload',
+  },
+  {
+    title: 'We validate the signature',
+    description: 'Device attestations, firmware version, and nonce are checked against the Proof of Capture contract.',
+    action: 'Verify',
+  },
+  {
+    title: 'Receive proof metadata',
+    description: 'Get a human-friendly card plus raw JSON proof for any downstream system.',
+    action: 'Share',
+  },
+];
+
+const trustSignals = [
+  {
+    label: 'Staked security',
+    value: '1 ETH',
+    caption: 'Every verifier locks capital before issuing proofs.',
+  },
+  {
+    label: 'Device matches',
+    value: '4,218+',
+    caption: 'Unique hardware IDs already registered on-chain.',
+  },
+  {
+    label: 'Latency',
+    value: '< 6s',
+    caption: 'Average verification time end-to-end.',
+  },
+];
 
 export default function Home() {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsVisible(true);
+    setIsMounted(true);
   }, []);
 
-  const features = [
-    {
-      title: "Instant verification",
-      description: "Get results in seconds.",
-      icon: "⚡"
-    },
-    {
-      title: "Hardware-level trust",
-      description: "Powered by device signatures + metadata.",
-      icon: "🔒"
-    },
-    {
-      title: "Tamper detection",
-      description: "Catch altered or stripped images.",
-      icon: "🛡️"
-    }
-  ];
-
-  const steps = [
-    {
-      step: "1",
-      title: "Upload your photo",
-      description: "Drag and drop or select your image file",
-      icon: "📤"
-    },
-    {
-      step: "2", 
-      title: "We verify the proof",
-      description: "Signature + metadata validation",
-      icon: "🔍"
-    },
-    {
-      step: "3",
-      title: "Get your certificate",
-      description: "Badge + downloadable proof",
-      icon: "🏆"
-    }
-  ];
-
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full blur-3xl animate-float"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl animate-float" style={{animationDelay: '2s'}}></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
-        </div>
+    <div className="relative min-h-screen overflow-hidden bg-[#020512] text-white">
+      <div className="pointer-events-none absolute inset-x-[-20%] top-[-35%] h-[520px] rounded-full bg-gradient-to-br from-violet-500/40 via-purple-500/30 to-indigo-500/30 blur-3xl"></div>
+      <div className="pointer-events-none absolute inset-y-[-30%] right-[-25%] w-[520px] rounded-full bg-gradient-to-br from-blue-500/20 via-cyan-500/20 to-teal-400/20 blur-[120px]"></div>
 
-        <div className="relative z-10 text-center max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold mb-8 leading-[0.9] tracking-tight">
-              <span className="gradient-text block">Verify any photo.</span>
-              <span className="gradient-text-accent block mt-4">Prove it's real.</span>
-            </h1>
-            <p className="text-xl sm:text-2xl lg:text-3xl text-gray-300 mb-12 max-w-5xl mx-auto leading-relaxed font-light">
-              Upload a picture and instantly check if it was truly captured on a specific device, backed by proof metadata.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
-              <button className="group relative inline-flex items-center justify-center px-8 py-4 sm:px-12 sm:py-5 text-lg sm:text-xl font-semibold text-white bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full hover:from-indigo-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-2xl">
-                <span className="relative z-10">Verify a photo</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full blur opacity-0 group-hover:opacity-75 transition-opacity duration-300"></div>
-              </button>
-              <button className="inline-flex items-center justify-center px-8 py-4 sm:px-12 sm:py-5 text-lg sm:text-xl font-semibold text-gray-300 border border-gray-600 rounded-full hover:border-gray-500 hover:text-white transition-all duration-300">
-                Learn more
-              </button>
+      <header className="relative z-30">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-8 sm:px-8 lg:px-10">
+          <div className="flex items-center gap-3">
+            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 backdrop-blur">
+              <span className="text-2xl">📸</span>
+            </span>
+            <div>
+              <p className="text-sm uppercase tracking-[0.35em] text-white/50">PhotoProof</p>
+              <p className="text-lg font-semibold tracking-tight text-white">Verified captures</p>
             </div>
           </div>
+          <nav className="hidden items-center gap-10 text-sm font-medium text-white/60 sm:flex">
+            <a href="#features" className="transition hover:text-white">
+              Features
+            </a>
+            <a href="#flow" className="transition hover:text-white">
+              Flow
+            </a>
+            <a href="#cta" className="transition hover:text-white">
+              Start verifying
+            </a>
+          </nav>
+          <button className="hidden rounded-full border border-white/20 px-5 py-2 text-sm font-medium text-white/70 backdrop-blur hover:border-white/40 hover:text-white sm:inline-flex">
+            View dashboard
+          </button>
         </div>
+      </header>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-white/50 rounded-full mt-2 animate-pulse"></div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-32 sm:py-40 lg:py-48 px-6 sm:px-8 lg:px-12 relative">
-        <div className="max-w-7xl mx-auto">
-          {/* Section Header */}
-          <div className={`text-center mb-20 sm:mb-24 lg:mb-32 transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8 sm:mb-10 leading-[0.9] tracking-tight">
-              Photo authenticity, <span className="gradient-text">made simple</span>
-            </h2>
-            <p className="text-xl sm:text-2xl lg:text-3xl text-gray-300 max-w-4xl mx-auto leading-relaxed font-light">
-              No more guessing if an image is real or tampered. Our platform makes proof transparent and instant.
-            </p>
-          </div>
-
-          {/* Feature Cards - Horizontal Layout */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
-            {features.map((feature, index) => (
-              <div 
-                key={index}
-                className={`glass rounded-3xl p-8 lg:p-10 text-center hover:scale-105 transition-all duration-300 group h-full flex flex-col justify-between ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-                style={{transitionDelay: `${400 + index * 200}ms`}}
-              >
-                <div>
-                  <div className="text-6xl lg:text-7xl mb-8 lg:mb-10 group-hover:scale-110 transition-transform duration-300">
-                    {feature.icon}
-                  </div>
-                  <h3 className="text-2xl lg:text-3xl font-bold mb-6 lg:mb-8 gradient-text">
-                    {feature.title}
-                  </h3>
-                </div>
-                <p className="text-gray-300 text-lg lg:text-xl leading-relaxed font-light">
-                  {feature.description}
-                </p>
+      <main className="relative z-20">
+        <section className="px-6 pt-24 pb-20 sm:px-8 sm:pt-32 lg:px-10 lg:pt-36 xl:pt-40">
+          <div className="mx-auto grid max-w-6xl items-center gap-16 lg:grid-cols-[1.05fr_0.95fr]">
+            <div className={`space-y-8 transition-all duration-700 ${isMounted ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'}`}>
+              <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 px-5 py-2 text-sm text-white/70 backdrop-blur">
+                <span className="inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
+                Live onchain verification
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Section Divider */}
-      <div className="py-16 sm:py-20 lg:py-24 px-6 sm:px-8 lg:px-12">
-        <div className="max-w-7xl mx-auto">
-          <div className="h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent"></div>
-        </div>
-      </div>
-
-      {/* How it Works Section */}
-      <section className="py-32 sm:py-40 lg:py-48 px-6 sm:px-8 lg:px-12 relative bg-gradient-to-b from-transparent to-gray-900/20">
-        <div className="max-w-7xl mx-auto">
-          {/* Section Header */}
-          <div className={`text-center mb-20 sm:mb-24 lg:mb-32 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{transitionDelay: '1200ms'}}>
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-8 sm:mb-10 leading-[0.9] tracking-tight">
-              How it <span className="gradient-text">works</span>
-            </h2>
-            <p className="text-xl sm:text-2xl lg:text-3xl text-gray-300 max-w-4xl mx-auto leading-relaxed font-light">
-              Just three steps. Simple, fast, and private.
-            </p>
-          </div>
-
-          {/* Horizontal Timeline */}
-          <div className="relative">
-            {/* Connection Line */}
-            <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500 transform -translate-y-1/2 z-0 rounded-full"></div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 lg:gap-12">
-              {steps.map((step, index) => (
-                <div 
-                  key={index}
-                  className={`relative z-10 text-center ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-                  style={{transitionDelay: `${1400 + index * 200}ms`}}
-                >
-                  {/* Step Icon */}
-                  <div className="glass rounded-full w-24 h-24 lg:w-28 lg:h-28 flex items-center justify-center mx-auto mb-8 lg:mb-10 group hover:scale-110 transition-all duration-300">
-                    <span className="text-4xl lg:text-5xl group-hover:scale-110 transition-transform duration-300">
-                      {step.icon}
+              <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-[4.2rem] lg:leading-[1.05]">
+                <span className="block">Proof that your photo</span>
+                <span className="font-itc-garamond text-[0.92em] text-white/90">
+                  was captured on the device you claim.
+                </span>
+              </h1>
+              <p className="max-w-xl text-lg text-white/70 sm:text-xl">
+                Upload a capture, and we map its hardware fingerprint, firmware, and metadata against a staked Proof of
+                Capture smart contract. Share a tamper-proof receipt the moment it verifies.
+              </p>
+              <div className="flex flex-col gap-4 sm:flex-row">
+                <button className="relative inline-flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-600 px-8 py-3 text-base font-medium shadow-lg shadow-purple-600/40 transition hover:scale-[1.01] hover:shadow-purple-500/60">
+                  <span className="relative z-10">Verify a photo</span>
+                  <span className="absolute inset-0 bg-gradient-to-r from-indigo-400/20 via-violet-400/20 to-purple-400/20 opacity-0 transition group-hover:opacity-100"></span>
+                </button>
+                <button className="inline-flex items-center justify-center rounded-full border border-white/20 px-8 py-3 text-base font-medium text-white/70 transition hover:border-white/40 hover:text-white">
+                  See how it works
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-6 text-sm text-white/60">
+                {trustSignals.map((signal) => (
+                  <div key={signal.label} className="space-y-1">
+                    <p className="text-xs uppercase tracking-[0.3em] text-white/40">{signal.label}</p>
+                    <p className="text-2xl font-semibold text-white">{signal.value}</p>
+                    <p>{signal.caption}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className={`relative mx-auto w-full max-w-[480px] transition-all duration-700 ${isMounted ? 'translate-y-0 opacity-100 delay-150' : 'translate-y-6 opacity-0'}`}>
+              <div className="absolute -inset-6 -z-10 rounded-[36px] bg-gradient-to-br from-purple-500/30 via-violet-500/30 to-indigo-500/30 blur-2xl"></div>
+              <div className="relative overflow-hidden rounded-[32px] border border-white/15 bg-white/[0.06] p-6 backdrop-blur-xl shadow-[0_45px_80px_-30px_rgba(76,29,149,0.45)]">
+                <div className="mb-6 flex items-center justify-between text-xs uppercase tracking-[0.35em] text-white/40">
+                  <span>Verification preview</span>
+                  <span>01: Proof sheet</span>
+                </div>
+                <div className="aspect-[4/5] overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-500/60 via-purple-500/60 to-sky-500/60">
+                  <div className="flex h-full flex-col justify-between p-6">
+                    <div className="flex items-center justify-between text-sm text-white/80">
+                      <span className="rounded-full bg-white/15 px-4 py-1">Device match</span>
+                      <span className="rounded-full bg-black/30 px-3 py-1 text-white/70">Nonce #48219</span>
+                    </div>
+                    <div className="space-y-4">
+                      <p className="text-2xl font-semibold">Capture confirmed ✅</p>
+                      <div className="grid grid-cols-2 gap-4 text-xs uppercase tracking-wide text-white/70">
+                        <div>
+                          <p className="text-white/40">Device ID</p>
+                          <p className="text-base font-medium text-white">SONY-A7RV-118</p>
+                        </div>
+                        <div>
+                          <p className="text-white/40">Firmware</p>
+                          <p className="text-base font-medium text-white">v2.4.6</p>
+                        </div>
+                        <div>
+                          <p className="text-white/40">Timestamp</p>
+                          <p className="text-base font-medium text-white">2025·09·12 18:22 UTC</p>
+                        </div>
+                        <div>
+                          <p className="text-white/40">Image hash</p>
+                          <p className="text-sm font-medium text-white">0x9f2b...a61c</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-6 grid gap-3 text-sm text-white/70">
+                  <div className="flex items-center justify-between">
+                    <span>Proof transaction</span>
+                    <span className="font-medium text-white">0x42fe...a223</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Stake locked</span>
+                    <span className="font-medium text-white">1.00 ETH</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Status</span>
+                    <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/40 px-3 py-1 text-emerald-300">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                      Verified
                     </span>
                   </div>
-                  
-                  {/* Step Number */}
-                  <div className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-full w-12 h-12 lg:w-14 lg:h-14 flex items-center justify-center mx-auto mb-6 lg:mb-8 font-bold text-xl lg:text-2xl shadow-lg">
-                    {step.step}
-                  </div>
-                  
-                  {/* Step Content */}
-                  <div className="space-y-4 lg:space-y-6">
-                    <h3 className="text-2xl lg:text-3xl font-bold gradient-text">
-                      {step.title}
-                    </h3>
-                    <p className="text-gray-300 text-lg lg:text-xl leading-relaxed max-w-sm mx-auto font-light">
-                      {step.description}
-                    </p>
-                  </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="features" className="relative overflow-hidden border-t border-white/10 bg-white/[0.03] px-6 py-24 sm:px-8 sm:py-28 lg:px-10">
+          <div className="pointer-events-none absolute inset-x-[10%] top-[-25%] h-[360px] rounded-full bg-gradient-to-r from-purple-500/20 via-indigo-500/20 to-sky-500/20 blur-[120px]"></div>
+          <div className="relative mx-auto max-w-6xl">
+            <div className={`mx-auto max-w-3xl text-center transition-all duration-700 ${isMounted ? 'translate-y-0 opacity-100 delay-100' : 'translate-y-6 opacity-0'}`}>
+              <p className="text-sm uppercase tracking-[0.4em] text-white/40">Why photoproof</p>
+              <h2 className="mt-4 text-3xl font-semibold text-white sm:text-4xl md:text-5xl">
+                A trust layer designed for journalists, marketplaces, and creative networks.
+              </h2>
+              <p className="mt-6 text-lg text-white/70">
+                Inspired by clean, cinematic storytelling. Every section breathes, every card feels tactile, and every
+                interaction is ready for the verification workflow you described.
+              </p>
+            </div>
+            <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:gap-8">
+              {featureCards.map((feature) => (
+                <article
+                  key={feature.title}
+                  className={`group relative overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.05] p-8 backdrop-blur-xl transition hover:border-white/30 hover:bg-white/[0.08] ${isMounted ? 'translate-y-0 opacity-100 delay-150' : 'translate-y-6 opacity-0'}`}
+                >
+                  <div className="absolute right-8 top-8 text-4xl opacity-40 transition group-hover:opacity-60">{feature.icon}</div>
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-2xl">
+                    {feature.icon}
+                  </div>
+                  <h3 className="mt-6 text-xl font-semibold text-white sm:text-2xl">{feature.title}</h3>
+                  <p className="mt-3 text-sm text-white/70 sm:text-base">{feature.description}</p>
+                  <div className="mt-8 inline-flex items-center gap-3 text-sm font-medium text-indigo-200">
+                    Learn more
+                    <span aria-hidden="true" className="text-base">
+                      →
+                    </span>
+                  </div>
+                </article>
               ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Footer */}
-      <footer className="py-24 sm:py-32 lg:py-40 px-6 sm:px-8 lg:px-12 border-t border-gray-800/50">
-        <div className="max-w-7xl mx-auto text-center">
-          <div className="text-3xl sm:text-4xl lg:text-5xl font-bold gradient-text mb-6 sm:mb-8">
-            PhotoVerify
+        <section id="flow" className="relative px-6 py-24 sm:px-8 sm:py-28 lg:px-10">
+          <div className="relative mx-auto max-w-6xl">
+            <div className={`grid gap-12 lg:grid-cols-[0.9fr_1.1fr] ${isMounted ? 'opacity-100' : 'opacity-0'}`}>
+              <div className="space-y-6">
+                <p className="text-sm uppercase tracking-[0.35em] text-white/40">Verification flow</p>
+                <h2 className="text-3xl font-semibold text-white sm:text-4xl md:text-5xl">
+                  From upload to proof in three elegant steps.
+                </h2>
+                <p className="text-lg text-white/70">
+                  We distilled the experience into a cinematic progression inspired by your reference: generous spacing,
+                  rich gradients, and tactile cards that lead the eye through each action.
+                </p>
+                <div className="rounded-[26px] border border-white/10 bg-white/[0.04] p-6 backdrop-blur-xl">
+                  <p className="text-xs uppercase tracking-[0.4em] text-white/40">Next up</p>
+                  <p className="mt-4 text-lg font-medium text-white">
+                    Build the verification modal that appears when the user clicks “Verify a photo”.
+                  </p>
+                  <p className="mt-3 text-sm text-white/60">
+                    Hook it into your Proof of Capture contract to read and write proof metadata on-chain.
+                  </p>
+                </div>
+              </div>
+              <div className="grid gap-6">
+                {verificationSteps.map((step, index) => (
+                  <div
+                    key={step.title}
+                    className={`group relative overflow-hidden rounded-[26px] border border-white/10 bg-white/[0.05] p-6 backdrop-blur-xl transition hover:border-white/25 hover:bg-white/[0.08] ${isMounted ? 'translate-x-0 opacity-100' : 'translate-x-8 opacity-0'}`}
+                    style={{ transitionDelay: `${index * 80}ms` }}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-lg font-semibold text-white/70">
+                          {index + 1}
+                        </span>
+                        <div>
+                          <h3 className="text-xl font-semibold text-white">{step.title}</h3>
+                          <p className="mt-1 text-sm text-white/65">{step.description}</p>
+                        </div>
+                      </div>
+                      <span className="rounded-full border border-white/20 px-4 py-1 text-xs uppercase tracking-widest text-white/60">
+                        {step.action}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-          <p className="text-gray-400 text-lg sm:text-xl lg:text-2xl mb-10 sm:mb-12 max-w-4xl mx-auto leading-relaxed font-light">
-            Cryptographic proof for photo authenticity
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-8 text-lg sm:text-xl text-gray-500">
-            <a href="#" className="hover:text-white transition-colors duration-300 font-medium">Privacy</a>
-            <a href="#" className="hover:text-white transition-colors duration-300 font-medium">Terms</a>
-            <a href="#" className="hover:text-white transition-colors duration-300 font-medium">Contact</a>
+        </section>
+
+        <section id="cta" className="relative overflow-hidden border-y border-white/10 bg-gradient-to-br from-[#0b0d1f] via-[#0f172a] to-[#110b22] px-6 py-24 sm:px-8 sm:py-28 lg:px-10">
+          <div className="pointer-events-none absolute inset-x-[5%] top-1/2 h-[420px] -translate-y-1/2 rounded-full bg-gradient-to-r from-violet-500/20 via-fuchsia-500/20 to-indigo-500/20 blur-[140px]"></div>
+          <div className="relative mx-auto grid max-w-5xl gap-10 text-center">
+            <div className={`space-y-6 ${isMounted ? 'opacity-100 delay-150' : 'opacity-0'}`}>
+              <p className="text-sm uppercase tracking-[0.35em] text-white/40">Ready when you are</p>
+              <h2 className="text-3xl font-semibold text-white sm:text-4xl md:text-5xl">
+                Let’s craft the verification experience next.
+              </h2>
+              <p className="mx-auto max-w-2xl text-lg text-white/70">
+                The landing page now mirrors the minimalist, glassy aesthetic from the reference. From here, we can wire
+                the CTA to your upload + verification flow, connect wallets, and surface on-chain proof cards.
+              </p>
+            </div>
+            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <button className="inline-flex items-center justify-center rounded-full bg-white px-8 py-3 text-base font-semibold text-slate-900 transition hover:bg-slate-200">
+                Build verification UI
+              </button>
+              <button className="inline-flex items-center justify-center rounded-full border border-white/30 px-8 py-3 text-base font-medium text-white/70 transition hover:border-white/50 hover:text-white">
+                View contract docs
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer className="relative z-20 px-6 py-16 sm:px-8 sm:py-20 lg:px-10">
+        <div className="mx-auto flex max-w-6xl flex-col gap-10 border-t border-white/10 pt-10 text-sm text-white/50 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-base font-semibold text-white">PhotoProof</p>
+            <p className="mt-2 max-w-sm text-white/60">
+              Building verifiable trust for every photo captured on real hardware.
+            </p>
+          </div>
+          <div className="flex gap-8">
+            <a href="#" className="transition hover:text-white">
+              Privacy
+            </a>
+            <a href="#" className="transition hover:text-white">
+              Terms
+            </a>
+            <a href="#" className="transition hover:text-white">
+              Contact
+            </a>
           </div>
         </div>
       </footer>

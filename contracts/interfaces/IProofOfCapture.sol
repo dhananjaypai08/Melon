@@ -5,8 +5,6 @@ interface IProofOfCapture {
     struct ImageProof {
         string deviceId;
         uint256 timestamp;
-        string firmware;
-        string signatureAlgo;
         address owner;
     }
 

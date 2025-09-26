@@ -12,11 +12,9 @@ contract ProofOfCapture is Ownable, IProofOfCapture, Constants, ReentrancyGuard 
 
     constructor() Ownable(msg.sender) {}
 
-    function stakeTokens(string memory deviceId, 
-        string memory firmware, 
-        string memory signatureAlgo) 
+    function stakeTokens(string memory deviceId) 
         external payable nonReentrant {
-        if(bytes(deviceId).length == 0 || bytes(signatureAlgo).length == 0){
+        if(bytes(deviceId).length == 0){
             revert InvalidInputs();
         }
         if(isStaked[msg.sender]){
@@ -28,7 +26,7 @@ contract ProofOfCapture is Ownable, IProofOfCapture, Constants, ReentrancyGuard 
         
         hardwareIdOfOwner[deviceId] = msg.sender;
         isStaked[msg.sender] = true;
-        ImageProof memory imageProof = ImageProof(deviceId, block.timestamp, firmware, signatureAlgo, msg.sender);
+        ImageProof memory imageProof = ImageProof(deviceId, block.timestamp, msg.sender);
         hardwareOwnerProofs[msg.sender] = imageProof;
         emit Stake(msg.sender, msg.value, block.timestamp);
     }

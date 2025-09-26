@@ -66,7 +66,7 @@ export default function ApprovePage() {
         abi: PROOF_OF_CAPTURE_ABI,
         functionName: "stakeTokens",
         args: [deviceId],
-        value: parseEther("0.1"),
+        value: parseEther("0.01"),
       });
 
       console.log("Transaction hash:", hash);
@@ -150,7 +150,7 @@ export default function ApprovePage() {
                 </div>
                 <div className="flex justify-between items-center p-3 rounded-lg bg-white/5">
                   <span>Staked Amount:</span>
-                  <span className="text-white font-medium">0.1 ETH</span>
+                  <span className="text-white font-medium">0.01 ETH</span>
                 </div>
                 <div className="flex justify-between items-center p-3 rounded-lg bg-white/5">
                   <span>Status:</span>

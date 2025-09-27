@@ -37,7 +37,7 @@ export default function RaspberryPiScene() {
       renderer.outputEncoding = THREE.sRGBEncoding;
     }
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.15;
+    renderer.toneMappingExposure = 1.32;
     renderer.physicallyCorrectLights = true;
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
@@ -51,9 +51,18 @@ export default function RaspberryPiScene() {
     controls.maxPolarAngle = Math.PI / 1.9;
     controls.autoRotate = true;
     controls.autoRotateSpeed = 0.45;
+    controls.screenSpacePanning = false;
+    controls.zoomSpeed = 0.6;
+
+    const initialRotation = {
+      x: -0.38,
+      y: 0.4,
+    };
 
     const boardGroup = new THREE.Group();
     scene.add(boardGroup);
+
+    const cleanupHandlers = [];
 
     const loader = new GLTFLoader();
     loader.load(
@@ -79,6 +88,8 @@ export default function RaspberryPiScene() {
         model.position.sub(center);
         model.position.y += (size.y * scale) / 2 + 0.08;
 
+        boardGroup.rotation.x = initialRotation.x;
+        boardGroup.rotation.y = initialRotation.y;
         boardGroup.add(model);
       },
       undefined,
@@ -87,29 +98,29 @@ export default function RaspberryPiScene() {
       }
     );
 
-    const ambientLight = new THREE.HemisphereLight('#b5d2ff', '#050912', 1.05);
+    const ambientLight = new THREE.HemisphereLight('#c6dcff', '#050912', 1.25);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight('#f8fbff', 1.55);
-    keyLight.position.set(2.8, 6.8, 4.6);
+    const keyLight = new THREE.DirectionalLight('#f9fbff', 1.95);
+    keyLight.position.set(2.6, 6.6, 4.4);
     scene.add(keyLight);
 
-    const rimLight = new THREE.PointLight('#6ae7d2', 1.45, 28);
+    const rimLight = new THREE.PointLight('#76f5de', 1.55, 30);
     rimLight.position.set(-4.6, 3.3, -5.4);
     scene.add(rimLight);
 
-    const fillLight = new THREE.DirectionalLight('#ffbfa1', 0.98);
-    fillLight.position.set(-2.1, 4.2, 4.2);
+    const fillLight = new THREE.DirectionalLight('#ffbfa1', 1.18);
+    fillLight.position.set(-1.9, 4.1, 4.2);
     scene.add(fillLight);
 
-    const accentLight = new THREE.SpotLight('#9fb6ff', 1.15, 22, Math.PI / 7, 0.5, 1.45);
-    accentLight.position.set(0.6, 8.2, 0.4);
-    accentLight.target.position.set(0, 0.6, 0);
+    const accentLight = new THREE.SpotLight('#a7c4ff', 1.38, 22, Math.PI / 7.5, 0.5, 1.45);
+    accentLight.position.set(0.4, 8.4, 0.3);
+    accentLight.target.position.set(0, 0.65, 0);
     scene.add(accentLight);
     scene.add(accentLight.target);
 
-    boardGroup.rotation.x = -0.18;
-    boardGroup.rotation.y = 0.6;
+    boardGroup.rotation.x = initialRotation.x;
+    boardGroup.rotation.y = initialRotation.y;
 
     controls.target.set(0, 0.35, 0);
     controls.update();
@@ -122,6 +133,27 @@ export default function RaspberryPiScene() {
     };
     controls.addEventListener('start', handleControlStart);
     controls.addEventListener('end', handleControlEnd);
+
+    if (renderer.domElement) {
+      renderer.domElement.style.cursor = 'grab';
+      const handlePointerDown = () => {
+        renderer.domElement.style.cursor = 'grabbing';
+      };
+      const handlePointerUp = () => {
+        renderer.domElement.style.cursor = 'grab';
+      };
+      renderer.domElement.addEventListener('pointerdown', handlePointerDown);
+      renderer.domElement.addEventListener('pointerup', handlePointerUp);
+      renderer.domElement.addEventListener('pointerleave', handlePointerUp);
+      renderer.domElement.addEventListener('pointercancel', handlePointerUp);
+
+      cleanupHandlers.push(() => {
+        renderer.domElement.removeEventListener('pointerdown', handlePointerDown);
+        renderer.domElement.removeEventListener('pointerup', handlePointerUp);
+        renderer.domElement.removeEventListener('pointerleave', handlePointerUp);
+        renderer.domElement.removeEventListener('pointercancel', handlePointerUp);
+      });
+    }
 
     const animate = () => {
       controls.update();
@@ -150,6 +182,7 @@ export default function RaspberryPiScene() {
       controls.dispose();
       controls.removeEventListener('start', handleControlStart);
       controls.removeEventListener('end', handleControlEnd);
+      cleanupHandlers.forEach((fn) => fn());
       scene.traverse((object) => {
         if (object.isMesh) {
           object.geometry.dispose();

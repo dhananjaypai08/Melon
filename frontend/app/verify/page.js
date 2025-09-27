@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Upload, FileImage, Shield } from "lucide-react";
 import { VerificationEngine } from "./libs/verificationEngine";
 import VerificationResults from "./components/VerificationResults";
@@ -11,6 +12,7 @@ import {
 } from "../../lib/proof-storage";
 
 export default function VerifyPage() {
+  const router = useRouter();
   const [selectedFile, setSelectedFile] = useState(null);
   const [verificationResult, setVerificationResult] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -115,7 +117,12 @@ export default function VerifyPage() {
       {/* Header */}
       <header className="relative z-30">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-8 sm:px-8 lg:px-10">
-          <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => router.push('/')}
+            className="flex cursor-pointer items-center gap-3 transition hover:opacity-90"
+            aria-label="Go to landing page"
+          >
             <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 backdrop-blur">
               <Image
                 src="/logo.png"
@@ -133,7 +140,7 @@ export default function VerifyPage() {
                 Image Verification
               </p>
             </div>
-          </div>
+          </button>
           <a
             href="/"
             className="rounded-2xl border border-white/30 px-6 py-3 text-white/70 transition hover:border-white/50 hover:text-white"

@@ -1,7 +1,10 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function HomePage() {
+  const router = useRouter();
   const [prompt, setPrompt] = useState("");
   const [files, setFiles] = useState([]); // store File objects
   const [previews, setPreviews] = useState([]); // store preview URLs
@@ -47,16 +50,33 @@ export default function HomePage() {
     } catch (err) {
       console.error("Error:", err);
       alert("Error generating images");
-    } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">
-        Nano Banana AI Image Generator 🍌
-      </h1>
+    <div className="min-h-screen bg-[#020512] text-white">
+      <header className="relative z-30 px-6 py-8 sm:px-8 lg:px-10">
+        <button
+          type="button"
+          onClick={() => router.push('/')}
+          className="flex cursor-pointer items-center gap-3 transition hover:opacity-90"
+          aria-label="Go to landing page"
+        >
+          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 backdrop-blur">
+            <Image src="/logo.png" alt="Melon logo" width={32} height={32} className="h-8 w-8" />
+          </span>
+          <div>
+            <p className="text-sm uppercase tracking-[0.35em] text-white/50">Melon</p>
+            <p className="text-lg font-semibold tracking-tight text-white">AI Generation</p>
+          </div>
+        </button>
+      </header>
+
+      <main className="p-6 sm:p-10">
+        <h1 className="text-2xl font-bold mb-4">
+          Nano Banana AI Image Generator 🍌
+        </h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <textarea
@@ -115,6 +135,7 @@ export default function HomePage() {
           </div>
         </div>
       )}
+      </main>
     </div>
   );
 }

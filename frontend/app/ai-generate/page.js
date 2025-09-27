@@ -1,11 +1,8 @@
 "use client";
 import { useState } from "react";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { Download, Shield, CheckCircle, AlertTriangle } from "lucide-react";
 
 export default function HomePage() {
-  const router = useRouter();
   const [prompt, setPrompt] = useState("");
   const [files, setFiles] = useState([]); // store File objects
   const [previews, setPreviews] = useState([]); // store preview URLs
@@ -58,6 +55,7 @@ export default function HomePage() {
     } catch (err) {
       console.error("Error:", err);
       alert("Error generating images");
+    } finally {
       setLoading(false);
     }
   };
@@ -73,36 +71,32 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-[#020512] text-white">
-      <header className="relative z-30 px-6 py-8 sm:px-8 lg:px-10">
-        <button
-          type="button"
-          onClick={() => router.push('/')}
-          className="flex cursor-pointer items-center gap-3 transition hover:opacity-90"
-          aria-label="Go to landing page"
-        >
-          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 backdrop-blur">
-            <Image src="/logo.png" alt="Melon logo" width={32} height={32} className="h-8 w-8" />
-          </span>
-          <div>
-            <p className="text-sm uppercase tracking-[0.35em] text-white/50">Melon</p>
-            <p className="text-lg font-semibold tracking-tight text-white">AI Generation</p>
-          </div>
-        </button>
-      </header>
+      <div className="container mx-auto p-6 max-w-4xl">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">
+            AI Image Generator with Proof
+          </h1>
+          <p className="text-white/70">
+            Generate images with embedded cryptographic proof of AI creation
+          </p>
+        </div>
 
-      <main className="p-6 sm:p-10">
-        <h1 className="text-2xl font-bold mb-4">
-          Nano Banana AI Image Generator 🍌
-        </h1>
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <textarea
-          className="w-full border rounded p-2"
-          rows="3"
-          placeholder="Enter your prompt..."
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-        />
+        {/* Form */}
+        <div className="rounded-[32px] border border-white/15 bg-white/[0.06] p-8 backdrop-blur-xl mb-8">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-white/70 mb-2">
+                Prompt
+              </label>
+              <textarea
+                className="w-full rounded-2xl border border-white/20 bg-white/5 px-4 py-3 text-white placeholder-white/40 backdrop-blur focus:border-white/40 focus:outline-none"
+                rows="3"
+                placeholder="Describe the image you want to generate..."
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+              />
+            </div>
 
             <div>
               <label className="block text-sm font-medium text-white/70 mb-2">

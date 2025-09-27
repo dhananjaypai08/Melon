@@ -35,30 +35,40 @@ export async function POST(req) {
     const aiProof = new AIProofEngine();
 
     // Process each image to add proof
-    const processedImages = generatedImages.map((base64Image, index) => {
-      try {
-        const { imageWithProof, proof } = aiProof.processAIImage(
-          prompt,
-          "google/gemini-2.5-flash-image-preview",
-          base64Image
-        );
+    const processedImages = await Promise.all(
+      generatedImages.map(async (base64Image, index) => {
+        try {
+          const { imageWithProof, proof } = await aiProof.processAIImage(
+            prompt,
+            "google/gemini-2.5-flash-image-preview",
+            base64Image
+          );
 
-        return {
-          image: imageWithProof,
-          proof: proof,
-          index: index,
-        };
-      } catch (error) {
-        console.error(`Failed to add proof to image ${index}:`, error);
-        // Return original image if proof embedding fails
-        return {
-          image: base64Image,
-          proof: null,
-          index: index,
-          error: "Proof embedding failed",
-        };
-      }
-    });
+          // Check if proof was actually embedded (imageWithProof != base64Image)
+          const proofEmbedded = imageWithProof !== base64Image;
+
+          return {
+            image: imageWithProof,
+            proof: proof,
+            index: index,
+            proofEmbedded: proofEmbedded,
+            error: proofEmbedded
+              ? null
+              : "EXIF embedding failed - proof generated but not embedded",
+          };
+        } catch (error) {
+          console.error(`Failed to add proof to image ${index}:`, error);
+          // Return original image if proof embedding fails
+          return {
+            image: base64Image,
+            proof: null,
+            index: index,
+            proofEmbedded: false,
+            error: "Proof generation failed",
+          };
+        }
+      })
+    );
 
     return NextResponse.json({
       images: processedImages.map((item) => item.image),

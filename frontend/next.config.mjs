@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  webpack: (config) => {
+  // Exclude Sharp from client bundle
+  serverExternalPackages: ["sharp"],
+
+  webpack: (config, { isServer }) => {
     config.resolve.fallback = {
       ...config.resolve.fallback,
       "pino-pretty": false,
@@ -27,13 +30,23 @@ const nextConfig = {
       "node:fs": false,
       "node:net": false,
       "node:tls": false,
+      "node:child_process": false,
     };
+
+    // Exclude Sharp from client-side bundle
+    if (!isServer) {
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        sharp: false,
+      };
+    }
 
     // Ignore warnings for these modules
     config.ignoreWarnings = [
       { module: /node_modules\/pino/ },
       { module: /node_modules\/@walletconnect/ },
       { module: /node_modules\/@0glabs/ },
+      { module: /node_modules\/sharp/ },
     ];
 
     return config;

@@ -62,8 +62,8 @@ export default function HomePage() {
 
   const downloadImage = (base64Image, index) => {
     const link = document.createElement("a");
-    link.href = `data:image/png;base64,${base64Image}`;
-    link.download = `ai-generated-${index + 1}-with-proof.png`;
+    link.href = `data:image/jpeg;base64,${base64Image}`;
+    link.download = `ai-generated-${index + 1}-with-proof.jpg`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -167,7 +167,7 @@ export default function HomePage() {
                     {/* Image */}
                     <div className="relative">
                       <img
-                        src={`data:image/png;base64,${img}`}
+                        src={`data:image/jpeg;base64,${img}`}
                         alt={`Generated ${idx + 1}`}
                         className="w-full rounded-2xl border border-white/10"
                       />

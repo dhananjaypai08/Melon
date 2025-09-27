@@ -130,11 +130,11 @@ export default function Home() {
               </p>
               <div className="flex flex-col gap-4 sm:flex-row">
                 <button className="relative inline-flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-600 px-8 py-3 text-base font-medium shadow-lg shadow-purple-600/40 transition hover:scale-[1.01] hover:shadow-purple-500/60">
-                  <span className="relative z-10">Verify a photo</span>
+                  <span className="relative z-10">Register Device</span>
                   <span className="absolute inset-0 bg-gradient-to-r from-indigo-400/20 via-violet-400/20 to-purple-400/20 opacity-0 transition group-hover:opacity-100"></span>
                 </button>
                 <button className="inline-flex items-center justify-center rounded-full border border-white/20 px-8 py-3 text-base font-medium text-white/70 transition hover:border-white/40 hover:text-white">
-                  See how it works
+                  Verify a photo
                 </button>
               </div>
               <div className="flex flex-wrap gap-6 text-sm text-white/60">

@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 const RaspberryPiScene = dynamic(() => import('../components/RaspberryPiScene'), {
@@ -55,14 +56,10 @@ const verificationSteps = [
 const trustSignals = [
   {
     label: 'Staked security',
-    value: '1 ETH',
+    value: '0.01 ETH',
     caption: 'Every verifier locks capital before issuing proofs.',
   },
-  {
-    label: 'Device matches',
-    value: '4,218+',
-    caption: 'Unique hardware IDs already registered on-chain.',
-  },
+  
   {
     label: 'Latency',
     value: '< 6s',
@@ -83,15 +80,10 @@ export default function Home() {
       <div className="pointer-events-none absolute inset-y-[-30%] right-[-25%] w-[520px] rounded-full bg-gradient-to-br from-blue-500/20 via-cyan-500/20 to-teal-400/20 blur-[120px]"></div>
 
       <header className="relative z-30">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-8 sm:px-8 lg:px-10">
-          <div className="flex items-center gap-3">
-            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 backdrop-blur">
-              <span className="text-2xl">📸</span>
-            </span>
-            <div>
-              <p className="text-sm uppercase tracking-[0.35em] text-white/50">PhotoProof</p>
-              <p className="text-lg font-semibold tracking-tight text-white">Verified captures</p>
-            </div>
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-10 py-8 sm:px-12 lg:px-15 items-left">
+          <div className="flex flex-col gap-3 translate-x-[-50%]">
+            <Image src="/logo.png" alt="Melon logo" width={56} height={56} className="h-14 w-14" priority />
+            <p className="text-sm uppercase tracking-[0.35em] text-white/50">Melon</p>
           </div>
           <nav className="hidden items-center gap-10 text-sm font-medium text-white/60 sm:flex">
             <a href="#features" className="transition hover:text-white">
@@ -104,17 +96,15 @@ export default function Home() {
               Start verifying
             </a>
           </nav>
-          <button className="hidden rounded-full border border-white/20 px-5 py-2 text-sm font-medium text-white/70 backdrop-blur hover:border-white/40 hover:text-white sm:inline-flex">
-            View dashboard
-          </button>
+      
         </div>
       </header>
 
       <main className="relative z-20">
-        <section className="px-6 pt-24 pb-20 sm:px-8 sm:pt-32 lg:px-10 lg:pt-36 xl:pt-40">
+        <section className="px-6 pt-8 pb-20 sm:px-8 sm:pt-12 lg:px-10 lg:pt-18 xl:pt-20">
           <div className="mx-auto grid max-w-6xl items-start gap-16 lg:grid-cols-[1.05fr_0.95fr]">
-            <div className={`space-y-8 transition-all duration-700 ${isMounted ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'}`}>
-              <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 px-5 py-2 text-sm text-white/70 backdrop-blur">
+            <div className={`flex flex-col space-y-8 transition-all duration-700 ${isMounted ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'} lg:space-y-8`}>
+              <div className="inline-flex self-start items-center gap-3 rounded-full border border-white/20 bg-white/5 px-5 py-2 text-sm text-white/70 backdrop-blur">
                 <span className="inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
                 Live onchain verification
               </div>
@@ -137,7 +127,7 @@ export default function Home() {
                   Verify a photo
                 </button>
               </div>
-              <div className="flex flex-wrap gap-6 text-sm text-white/60">
+              <div className="mt-50 flex flex-wrap gap-6 text-sm text-white/60 lg:mt-65 lg:flex-col lg:items-start lg:gap-6 lg:self-center lg:text-base lg:min-h-[240px] lg:justify-start">
                 {trustSignals.map((signal) => (
                   <div key={signal.label} className="space-y-1">
                     <p className="text-xs uppercase tracking-[0.3em] text-white/40">{signal.label}</p>
@@ -147,21 +137,21 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            <div className={`relative mx-auto w-full max-w-[520px] space-y-8 transition-all duration-700 ${isMounted ? 'translate-y-0 opacity-100 delay-150' : 'translate-y-6 opacity-0'}`}>
+            <div className={`relative mx-auto w-full max-w-[520px] space-y-35 transition-all duration-700 ${isMounted ? 'translate-y-0 opacity-100 delay-150' : 'translate-y-6 opacity-0'} lg:space-y-38`}>
               <div className="relative space-y-6">
                 
-                <div className="relative h-[420px] w-full sm:h-[460px]">
+                <div className="relative h-[520px] w-full sm:h-[540px]">
                   <RaspberryPiScene />
                 </div>
               </div>
 
-              <div className="relative overflow-hidden rounded-[32px] border border-white/15 bg-white/[0.06] p-6 backdrop-blur-xl shadow-[0_35px_65px_-25px_rgba(76,29,149,0.45)]">
+              <div className="relative mx-auto w-full max-w-[320px] overflow-hidden rounded-[24px] border border-white/15 bg-white/[0.06] p-3.5 backdrop-blur-xl shadow-[0_20px_40px_-20px_rgba(76,29,149,0.45)]">
                 <div className="mb-6 flex items-center justify-between text-xs uppercase tracking-[0.35em] text-white/40">
                   <span>Verification preview</span>
                   <span>01: Proof sheet</span>
                 </div>
                 <div className="aspect-[4/5] overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-500/60 via-purple-500/60 to-sky-500/60">
-                  <div className="flex h-full flex-col justify-between p-6">
+                  <div className="flex h-full flex-col justify-between p-4">
                     <div className="flex items-center justify-between text-sm text-white/80">
                       <span className="rounded-full bg-white/15 px-4 py-1">Device match</span>
                       <span className="rounded-full bg-black/30 px-3 py-1 text-white/70">Nonce #48219</span>
@@ -326,9 +316,9 @@ export default function Home() {
       <footer className="relative z-20 px-6 py-16 sm:px-8 sm:py-20 lg:px-10">
         <div className="mx-auto flex max-w-6xl flex-col gap-10 border-t border-white/10 pt-10 text-sm text-white/50 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-base font-semibold text-white">PhotoProof</p>
+            <p className="text-base font-semibold text-white">Melon</p>
             <p className="mt-2 max-w-sm text-white/60">
-              Building verifiable trust for every photo captured on real hardware.
+              Hardware-attested capture proofing for teams that need trusted imagery.
             </p>
           </div>
           <div className="flex gap-8">

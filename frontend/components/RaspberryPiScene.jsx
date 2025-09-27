@@ -23,8 +23,8 @@ export default function RaspberryPiScene() {
       0.1,
       100
     );
-    camera.position.set(5.5, 4.2, 5.5);
-    camera.lookAt(0, 0.3, 0);
+    camera.position.set(5, 3.9, 4.8);
+    camera.lookAt(0, 0.5, 0);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -46,9 +46,9 @@ export default function RaspberryPiScene() {
     controls.enableDamping = true;
     controls.dampingFactor = 0.08;
     controls.enablePan = false;
-    controls.minDistance = 3.8;
-    controls.maxDistance = 7.5;
-    controls.maxPolarAngle = Math.PI / 2.05;
+    controls.minDistance = 3.2;
+    controls.maxDistance = 6.4;
+    controls.maxPolarAngle = Math.PI / 1.9;
     controls.autoRotate = true;
     controls.autoRotateSpeed = 0.45;
 
@@ -71,13 +71,13 @@ export default function RaspberryPiScene() {
         const box = new THREE.Box3().setFromObject(model);
         const size = box.getSize(new THREE.Vector3());
         const maxDim = Math.max(size.x, size.y, size.z) || 1;
-        const scale = 3.6 / maxDim;
+        const scale = 3.5/ maxDim;
         model.scale.setScalar(scale);
 
         box.setFromObject(model);
         const center = box.getCenter(new THREE.Vector3());
         model.position.sub(center);
-        model.position.y += (size.y * scale) / 2;
+        model.position.y += (size.y * scale) / 2 + 0.08;
 
         boardGroup.add(model);
       },
@@ -87,24 +87,24 @@ export default function RaspberryPiScene() {
       }
     );
 
-    const ambientLight = new THREE.HemisphereLight('#a9c9ff', '#0c1324', 0.9);
+    const ambientLight = new THREE.HemisphereLight('#b5d2ff', '#050912', 1.05);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight('#f2f5ff', 1.35);
-    keyLight.position.set(3.2, 6.5, 5.1);
+    const keyLight = new THREE.DirectionalLight('#f8fbff', 1.55);
+    keyLight.position.set(2.8, 6.8, 4.6);
     scene.add(keyLight);
 
-    const rimLight = new THREE.PointLight('#6ae7d2', 1.35, 28);
-    rimLight.position.set(-5.2, 3.5, -5.8);
+    const rimLight = new THREE.PointLight('#6ae7d2', 1.45, 28);
+    rimLight.position.set(-4.6, 3.3, -5.4);
     scene.add(rimLight);
 
-    const fillLight = new THREE.DirectionalLight('#ffbfa1', 0.92);
-    fillLight.position.set(-2.2, 4.2, 3.9);
+    const fillLight = new THREE.DirectionalLight('#ffbfa1', 0.98);
+    fillLight.position.set(-2.1, 4.2, 4.2);
     scene.add(fillLight);
 
-    const accentLight = new THREE.SpotLight('#7f8cff', 0.75, 18, Math.PI / 6, 0.45, 1.2);
-    accentLight.position.set(1.8, 5.8, -3.2);
-    accentLight.target.position.set(0, 0.2, 0);
+    const accentLight = new THREE.SpotLight('#9fb6ff', 1.15, 22, Math.PI / 7, 0.5, 1.45);
+    accentLight.position.set(0.6, 8.2, 0.4);
+    accentLight.target.position.set(0, 0.6, 0);
     scene.add(accentLight);
     scene.add(accentLight.target);
 

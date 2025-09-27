@@ -20,8 +20,8 @@ const playfair = Playfair_Display({
 });
 
 export const metadata = {
-  title: "PhotoProof",
-  description: "Verify photo authenticity with blockchain",
+  title: "Melon",
+  description: "Prove your captures with Melon's hardware-attested verification",
 };
 
 export default function RootLayout({ children }) {

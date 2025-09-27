@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import {
@@ -125,11 +126,11 @@ export default function ApprovePage() {
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-8 sm:px-8 lg:px-10">
           <div className="flex items-center gap-3">
             <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 backdrop-blur">
-              <span className="text-2xl">📸</span>
+              <Image src="/logo.png" alt="Melon logo" width={32} height={32} className="h-8 w-8" />
             </span>
             <div>
               <p className="text-sm uppercase tracking-[0.35em] text-white/50">
-                PhotoProof
+                Melon
               </p>
               <p className="text-lg font-semibold tracking-tight text-white">
                 Device Approval

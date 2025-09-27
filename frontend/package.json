@@ -8,12 +8,16 @@
     "start": "next start"
   },
   "dependencies": {
+    "@noble/ed25519": "^3.0.0",
     "@rainbow-me/rainbowkit": "^2.2.8",
     "@react-native-async-storage/async-storage": "^1.24.0",
     "@tanstack/react-query": "^5.90.2",
+    "lucide-react": "^0.544.0",
     "next": "15.5.4",
+    "piexifjs": "^1.0.6",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "three": "^0.170.0",
     "viem": "^2.37.8",
     "wagmi": "^2.17.5"
   },
@@ -21,5 +25,9 @@
     "@tailwindcss/postcss": "^4",
     "pino-pretty": "^13.1.1",
     "tailwindcss": "^4"
+  },
+  "overrides": {
+    "lit": "2.7.5",
+    "@lit/reactive-element": "2.1.0"
   }
 }

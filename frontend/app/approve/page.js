@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import {
@@ -7,10 +8,10 @@ import {
   useWriteContract,
   useWaitForTransactionReceipt,
 } from "wagmi";
-import { parseEther } from "viem";
 import {
   PROOF_OF_CAPTURE_ADDRESS,
   PROOF_OF_CAPTURE_ABI,
+  STAKING_AMOUNT,
 } from "../../lib/contract";
 
 export default function ApprovePage() {
@@ -21,7 +22,12 @@ export default function ApprovePage() {
   const [error, setError] = useState("");
 
   const { address, isConnected } = useAccount();
-  const { writeContract } = useWriteContract();
+  const {
+    data: hash,
+    error: writeError,
+    isPending,
+    writeContract,
+  } = useWriteContract();
 
   const {
     isLoading: isConfirming,
@@ -31,14 +37,34 @@ export default function ApprovePage() {
     hash: txHash,
   });
 
-  // Handle successful transaction
+  // Handle transaction hash from writeContract
   useEffect(() => {
-    if (isConfirmed && txHash && !success) {
+    if (hash && !txHash) {
+      console.log("Transaction hash received:", hash);
+      setTxHash(hash);
+    }
+  }, [hash, txHash]);
+
+  // Handle successful transaction confirmation
+  useEffect(() => {
+    if (isConfirmed && txHash) {
       console.log("Transaction confirmed!", txHash);
       setSuccess(true);
       setIsLoading(false);
     }
-  }, [isConfirmed, txHash, success]);
+  }, [isConfirmed, txHash]);
+
+  // Handle write error
+  useEffect(() => {
+    if (writeError) {
+      console.error("Write error:", writeError);
+      setError(
+        "Transaction failed: " + (writeError.shortMessage || writeError.message)
+      );
+      setIsLoading(false);
+      setTxHash("");
+    }
+  }, [writeError]);
 
   // Handle transaction error
   useEffect(() => {
@@ -46,6 +72,7 @@ export default function ApprovePage() {
       console.error("Transaction error:", txError);
       setError("Transaction failed: " + txError.message);
       setIsLoading(false);
+      setTxHash("");
     }
   }, [txError]);
 
@@ -58,23 +85,25 @@ export default function ApprovePage() {
     setIsLoading(true);
     setError("");
     setSuccess(false);
+    setTxHash("");
 
     try {
       console.log("Starting transaction...");
-      const hash = await writeContract({
+      console.log("Device ID:", deviceId);
+      console.log("Staking amount:", STAKING_AMOUNT);
+
+      writeContract({
         address: PROOF_OF_CAPTURE_ADDRESS,
         abi: PROOF_OF_CAPTURE_ABI,
         functionName: "stakeTokens",
         args: [deviceId],
-        value: parseEther("0.1"),
+        value: STAKING_AMOUNT,
       });
-
-      console.log("Transaction hash:", hash);
-      setTxHash(hash);
     } catch (error) {
       console.error("Transaction failed:", error);
       setError("Transaction failed: " + (error.shortMessage || error.message));
       setIsLoading(false);
+      setTxHash("");
     }
   };
 
@@ -97,11 +126,11 @@ export default function ApprovePage() {
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-8 sm:px-8 lg:px-10">
           <div className="flex items-center gap-3">
             <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 backdrop-blur">
-              <span className="text-2xl">📸</span>
+              <Image src="/logo.png" alt="Melon logo" width={32} height={32} className="h-8 w-8" />
             </span>
             <div>
               <p className="text-sm uppercase tracking-[0.35em] text-white/50">
-                PhotoProof
+                Melon
               </p>
               <p className="text-lg font-semibold tracking-tight text-white">
                 Device Approval
@@ -150,7 +179,7 @@ export default function ApprovePage() {
                 </div>
                 <div className="flex justify-between items-center p-3 rounded-lg bg-white/5">
                   <span>Staked Amount:</span>
-                  <span className="text-white font-medium">0.1 ETH</span>
+                  <span className="text-white font-medium">0.01 ETH</span>
                 </div>
                 <div className="flex justify-between items-center p-3 rounded-lg bg-white/5">
                   <span>Status:</span>
@@ -201,7 +230,7 @@ export default function ApprovePage() {
                   <div className="space-y-2 text-sm text-white/70">
                     <div className="flex justify-between">
                       <span>Required Stake:</span>
-                      <span className="text-white font-medium">0.1 ETH</span>
+                      <span className="text-white font-medium">0.01 ETH</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Network:</span>
@@ -224,7 +253,7 @@ export default function ApprovePage() {
                     <div className="flex items-center gap-3 text-blue-300">
                       <div className="h-5 w-5 animate-spin rounded-full border-2 border-blue-300/30 border-t-blue-300"></div>
                       <span className="text-sm">
-                        {isLoading &&
+                        {isPending &&
                           !txHash &&
                           "Waiting for wallet confirmation..."}
                         {txHash &&
@@ -255,9 +284,8 @@ export default function ApprovePage() {
                   {isLoading || isConfirming ? (
                     <div className="flex items-center justify-center gap-2">
                       <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white"></div>
-                      {isLoading && !txHash
-                        ? "Confirm in Wallet..."
-                        : "Processing Transaction..."}
+                      {isPending && !txHash && "Confirm in Wallet..."}
+                      {txHash && isConfirming && "Processing Transaction..."}
                     </div>
                   ) : (
                     "Stake to Whitelist Device"

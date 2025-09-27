@@ -8,15 +8,17 @@
     "start": "next start"
   },
   "dependencies": {
+    "@noble/ed25519": "^3.0.0",
     "@rainbow-me/rainbowkit": "^2.2.8",
     "@react-native-async-storage/async-storage": "^1.24.0",
     "@tanstack/react-query": "^5.90.2",
     "next": "15.5.4",
+    "piexifjs": "^1.0.6",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "three": "^0.170.0",
     "viem": "^2.37.8",
-    "wagmi": "^2.17.5",
-    "three": "^0.170.0"
+    "wagmi": "^2.17.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

@@ -108,12 +108,17 @@ export default function Home() {
                 Capture smart contract. Share a tamper-proof receipt the moment it verifies.
               </p>
               <div className="flex flex-col gap-4 sm:flex-row">
-                <button className="relative inline-flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-600 px-8 py-3 text-base font-medium shadow-lg shadow-purple-600/40 transition hover:scale-[1.01] hover:shadow-purple-500/60">
-                  <span className="relative z-10">Register Device</span>
-                  <span className="absolute inset-0 bg-gradient-to-r from-indigo-400/20 via-violet-400/20 to-purple-400/20 opacity-0 transition group-hover:opacity-100"></span>
+                <button className="group relative inline-flex h-12 overflow-hidden rounded-full p-[1px] text-base font-medium focus:outline-none focus:ring-2 focus:ring-purple-400/70 focus:ring-offset-2 focus:ring-offset-[#020512] transition hover:scale-[1.01]">
+                  <span className="absolute inset-[-150%] animate-[spin_2.6s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#6366f1_0%,#a855f7_50%,#22d3ee_100%)] opacity-75"></span>
+                  <span className="relative inline-flex h-full w-full items-center justify-center rounded-full border border-transparent bg-black/60 px-8 text-white/85 backdrop-blur-xl transition-colors group-hover:border-white/35 group-hover:text-white">
+                    Register Device
+                  </span>
                 </button>
-                <button className="inline-flex items-center justify-center rounded-full border border-white/20 px-8 py-3 text-base font-medium text-white/70 transition hover:border-white/40 hover:text-white">
-                  Verify a photo
+                <button className="group relative inline-flex h-12 overflow-hidden rounded-full p-[1px] text-base font-medium focus:outline-none focus:ring-2 focus:ring-purple-400/60 focus:ring-offset-2 focus:ring-offset-[#020512] transition hover:scale-[1.01]">
+                  <span className="absolute inset-[-150%] animate-[spin_3.2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#6366f1_0%,#a855f7_50%,#22d3ee_100%)] opacity-75"></span>
+                  <span className="relative inline-flex h-full w-full items-center justify-center rounded-full border border-transparent bg-black/60 px-8 text-white/85 backdrop-blur-xl transition-colors group-hover:border-white/35 group-hover:text-white">
+                    Verify a photo
+                  </span>
                 </button>
               </div>
               <div className="mt-50 flex flex-wrap gap-6 text-sm text-white/60 lg:mt-65 lg:flex-col lg:items-start lg:gap-6 lg:self-center lg:text-base lg:min-h-[240px] lg:justify-start">
@@ -126,10 +131,10 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            <div className={`relative mx-auto w-full max-w-[520px] space-y-35 transition-all duration-700 ${isMounted ? 'translate-y-0 opacity-100 delay-150' : 'translate-y-6 opacity-0'} lg:space-y-38`}>
+            <div className={`relative mx-auto w-full max-w-[1100px] space-y-35 transition-all duration-700 ${isMounted ? 'translate-y-0 opacity-100 delay-150' : 'translate-y-6 opacity-0'} lg:space-y-38`}>
               <div className="relative space-y-6">
                 
-                <div className="relative h-[520px] w-full sm:h-[540px]">
+                <div className="relative h-[560px] w-full sm:h-[620px] lg:h-[640px]">
                   <RaspberryPiScene />
                 </div>
               </div>

@@ -80,7 +80,7 @@ export default function RaspberryPiScene() {
         const box = new THREE.Box3().setFromObject(model);
         const size = box.getSize(new THREE.Vector3());
         const maxDim = Math.max(size.x, size.y, size.z) || 1;
-        const scale = 3.5/ maxDim;
+        const scale = 3.1 / maxDim;
         model.scale.setScalar(scale);
 
         box.setFromObject(model);

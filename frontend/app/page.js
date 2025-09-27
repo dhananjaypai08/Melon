@@ -80,22 +80,11 @@ export default function Home() {
       <div className="pointer-events-none absolute inset-y-[-30%] right-[-25%] w-[520px] rounded-full bg-gradient-to-br from-blue-500/20 via-cyan-500/20 to-teal-400/20 blur-[120px]"></div>
 
       <header className="relative z-30">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-10 py-8 sm:px-12 lg:px-15 items-left">
-          <div className="flex flex-col gap-3 translate-x-[-50%]">
+        <div className="mx-auto flex max-w-6xl items-start justify-between p py-9">
+          <div className="flex items-center gap-2">
             <Image src="/logo.png" alt="Melon logo" width={56} height={56} className="h-14 w-14" priority />
-            <p className="text-sm uppercase tracking-[0.35em] text-white/50">Melon</p>
+            <p className="text-sm uppercase  text-white/50">Melon</p>
           </div>
-          <nav className="hidden items-center gap-10 text-sm font-medium text-white/60 sm:flex">
-            <a href="#features" className="transition hover:text-white">
-              Features
-            </a>
-            <a href="#flow" className="transition hover:text-white">
-              Flow
-            </a>
-            <a href="#cta" className="transition hover:text-white">
-              Start verifying
-            </a>
-          </nav>
       
         </div>
       </header>

@@ -1,10 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Upload, FileImage, Shield } from "lucide-react";
 import { VerificationEngine } from "./libs/verificationEngine";
 import VerificationResults from "./components/VerificationResults";
+import {
+  uploadProofToOG,
+  isOGStorageConfigured,
+} from "../../lib/proof-storage";
 
 export default function VerifyPage() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -13,6 +17,27 @@ export default function VerifyPage() {
   const [debugInfo, setDebugInfo] = useState(null);
   const [proofData, setProofData] = useState(null);
   const [exifDebugInfo, setExifDebugInfo] = useState(null);
+  const [storageResult, setStorageResult] = useState(null);
+  const [storageLoading, setStorageLoading] = useState(false);
+  const [ogConfigured, setOgConfigured] = useState(false);
+  const [ogConfigChecked, setOgConfigChecked] = useState(false);
+
+  // Check 0G Storage configuration once when component mounts
+  useEffect(() => {
+    const checkOGConfig = async () => {
+      try {
+        const configured = await isOGStorageConfigured();
+        setOgConfigured(configured);
+      } catch (error) {
+        console.error("Failed to check 0G Storage configuration:", error);
+        setOgConfigured(false);
+      } finally {
+        setOgConfigChecked(true);
+      }
+    };
+
+    checkOGConfig();
+  }, []);
 
   const handleFileSelect = (event) => {
     const file = event.target.files[0];
@@ -26,6 +51,7 @@ export default function VerifyPage() {
       setDebugInfo(null);
       setProofData(null);
       setExifDebugInfo(null);
+      setStorageResult(null);
     }
   };
 
@@ -37,6 +63,7 @@ export default function VerifyPage() {
     setDebugInfo(null);
     setProofData(null);
     setExifDebugInfo(null);
+    setStorageResult(null);
 
     try {
       const engine = new VerificationEngine();
@@ -46,6 +73,28 @@ export default function VerifyPage() {
       setDebugInfo(result.debugInfo);
       setProofData(result.proofData);
       setExifDebugInfo(result.exifDebugInfo);
+
+      // If verification successful and 0G Storage is configured, upload to 0G
+      if (result.verificationResult.success && ogConfigured) {
+        setStorageLoading(true);
+
+        try {
+          const ogResult = await uploadProofToOG(
+            selectedFile,
+            result.proofData,
+            result.verificationResult
+          );
+          setStorageResult(ogResult);
+        } catch (error) {
+          console.error("0G Storage upload failed:", error);
+          setStorageResult({
+            success: false,
+            error: error.message,
+          });
+        } finally {
+          setStorageLoading(false);
+        }
+      }
     } catch (error) {
       setVerificationResult({
         success: false,
@@ -102,6 +151,12 @@ export default function VerifyPage() {
             <div className="inline-flex self-start items-center gap-3 rounded-full border border-white/20 bg-white/5 px-5 py-2 text-sm text-white/70 backdrop-blur mb-6">
               <Shield className="h-4 w-4 text-emerald-400" />
               Cryptographic Verification
+              {ogConfigChecked && ogConfigured && (
+                <>
+                  <span className="text-white/40">•</span>
+                  <span className="text-blue-400">0G Storage</span>
+                </>
+              )}
             </div>
             <h1 className="text-4xl font-semibold text-white mb-4 sm:text-5xl">
               Verify Image Authenticity
@@ -109,6 +164,12 @@ export default function VerifyPage() {
             <p className="text-lg text-white/70 max-w-2xl mx-auto">
               Upload a JPEG image with embedded proof to verify its
               cryptographic authenticity and hardware attestation.
+              {ogConfigChecked && ogConfigured && (
+                <span className="block mt-2 text-blue-300">
+                  Verified proofs will be automatically stored on 0G Storage for
+                  permanent access.
+                </span>
+              )}
             </p>
           </div>
 
@@ -156,7 +217,7 @@ export default function VerifyPage() {
                   <div className="flex gap-4 justify-center">
                     <button
                       onClick={handleVerify}
-                      disabled={loading}
+                      disabled={loading || storageLoading}
                       className="inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-green-600 px-8 py-4 text-lg font-medium text-white shadow-lg shadow-emerald-600/40 transition hover:scale-[1.01] hover:shadow-emerald-500/60 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                     >
                       <Shield className="h-5 w-5" />
@@ -176,8 +237,10 @@ export default function VerifyPage() {
                         setDebugInfo(null);
                         setProofData(null);
                         setExifDebugInfo(null);
+                        setStorageResult(null);
                       }}
-                      className="rounded-2xl border border-white/30 px-6 py-4 text-white/70 transition hover:border-white/50 hover:text-white"
+                      disabled={loading || storageLoading}
+                      className="rounded-2xl border border-white/30 px-6 py-4 text-white/70 transition hover:border-white/50 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Choose Different File
                     </button>
@@ -195,6 +258,19 @@ export default function VerifyPage() {
             </div>
           </div>
 
+          {/* Configuration Status */}
+          {ogConfigChecked && !ogConfigured && (
+            <div className="rounded-[32px] border border-yellow-400/20 bg-yellow-400/5 p-6 backdrop-blur-xl mb-8">
+              <div className="flex items-center gap-3 text-yellow-300">
+                <Shield className="h-5 w-5" />
+                <span className="text-sm">
+                  0G Storage not configured. Verification will work, but proofs
+                  won't be stored permanently.
+                </span>
+              </div>
+            </div>
+          )}
+
           {/* Verification Results */}
           <VerificationResults
             verificationResult={verificationResult}
@@ -202,6 +278,8 @@ export default function VerifyPage() {
             proofData={proofData}
             exifDebugInfo={exifDebugInfo}
             loading={loading}
+            storageResult={storageResult}
+            storageLoading={storageLoading}
           />
         </div>
       </main>

@@ -1,5 +1,6 @@
 import React from "react";
 import { CheckCircle, XCircle, AlertTriangle, Bug, Eye } from "lucide-react";
+import StorageStatus from "./StorageStatus";
 
 export default function VerificationResults({
   verificationResult,
@@ -7,6 +8,8 @@ export default function VerificationResults({
   proofData,
   exifDebugInfo,
   loading,
+  storageResult,
+  storageLoading,
 }) {
   if (loading) {
     return (
@@ -95,6 +98,9 @@ export default function VerificationResults({
           )}
         </div>
       )}
+
+      {/* 0G Storage Status */}
+      <StorageStatus storageResult={storageResult} loading={storageLoading} />
 
       {/* Proof Data */}
       {proofData && (

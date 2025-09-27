@@ -4,11 +4,11 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider } from "wagmi";
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { config } from "../lib/wagmi";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 
 export function Providers({ children }) {
-  // Create QueryClient with useMemo to prevent recreation
-  const queryClient = useMemo(
+  // Create QueryClient in a singleton pattern to prevent re-initialization
+  const [queryClient] = useState(
     () =>
       new QueryClient({
         defaultOptions: {
@@ -16,14 +16,13 @@ export function Providers({ children }) {
             staleTime: 60 * 1000,
           },
         },
-      }),
-    []
+      })
   );
 
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider>{children}</RainbowKitProvider>
+        <RainbowKitProvider modalSize="compact">{children}</RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
   );

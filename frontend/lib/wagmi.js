@@ -20,6 +20,6 @@ const galelio = {
 export const config = getDefaultConfig({
   appName: "ETHGlobal",
   projectId: "2ef30f97cc3cd1fc5fbc037b40b98e43",
-  chains: [galelio],
+  chains: [sepolia, galelio],
   ssr: true,
 });

@@ -9,6 +9,7 @@ contract ProofOfCapture is Ownable, IProofOfCapture, Constants, ReentrancyGuard 
     mapping(string => address) public hardwareIdOfOwner;
     mapping(address => ImageProof) public hardwareOwnerProofs;
     mapping(address => bool) public isStaked;
+    mapping(string => address) public ownerOfDevice;
 
     constructor() Ownable(msg.sender) {}
 
@@ -23,9 +24,10 @@ contract ProofOfCapture is Ownable, IProofOfCapture, Constants, ReentrancyGuard 
         if(msg.value != STAKING_AMOUNT){
             revert NotExactAmount(msg.value);
         }
-        
+        ownerOfDevice[deviceId] = msg.sender;
         hardwareIdOfOwner[deviceId] = msg.sender;
         isStaked[msg.sender] = true;
+        
         ImageProof memory imageProof = ImageProof(deviceId, block.timestamp, msg.sender);
         hardwareOwnerProofs[msg.sender] = imageProof;
         emit Stake(msg.sender, msg.value, block.timestamp);

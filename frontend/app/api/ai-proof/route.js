@@ -163,59 +163,44 @@ export async function POST(request) {
 
 // Extract proof from Sharp metadata with enhanced debugging
 async function extractProofFromSharpMetadata(imageBuffer) {
-  console.log("🔍 Starting Sharp metadata extraction...");
 
   // Use Sharp to get metadata
   const metadata = await sharp(imageBuffer).metadata();
-  console.log("📊 Sharp metadata keys:", Object.keys(metadata));
-  console.log("📊 Has EXIF:", !!metadata.exif);
-  console.log("📊 EXIF buffer length:", metadata.exif?.length || 0);
 
   if (!metadata.exif) {
     throw new Error("No EXIF data found in Sharp metadata");
   }
 
-  // Try multiple approaches to extract UserComment
-  console.log("🔧 Attempting multiple extraction methods...");
-
   // Method 1: Look for raw JSON string in EXIF buffer
   try {
     const exifString = metadata.exif.toString("utf8");
-    console.log("📝 EXIF as string preview:", exifString.substring(0, 200));
 
     // Look for JSON patterns
     const jsonMatches = exifString.match(
       /\{[^}]*"proof_type"[^}]*"ai_generated"[^}]*\}/g
     );
     if (jsonMatches && jsonMatches.length > 0) {
-      console.log("✅ Found JSON match in EXIF string");
       const proof = JSON.parse(jsonMatches[0]);
       return proof;
     }
   } catch (e) {
-    console.log("❌ Method 1 failed:", e.message);
-  }
+    console.log("❌ Method 1 failed:", e.message);}
 
   // Method 2: Parse EXIF structure to find UserComment tag
   try {
     const view = new DataView(metadata.exif.buffer);
-    console.log("🔍 Parsing EXIF structure...");
 
     // Look for UserComment tag (0x9286) in the EXIF data
     for (let i = 0; i < view.byteLength - 20; i += 2) {
       try {
         const tag = view.getUint16(i, true); // little endian
         if (tag === 0x9286) {
-          console.log(`✅ Found UserComment tag at offset ${i}`);
 
           // Try to extract the data around this tag
           const type = view.getUint16(i + 2, true);
           const count = view.getUint32(i + 4, true);
           const valueOffset = view.getUint32(i + 8, true);
 
-          console.log(
-            `📋 Tag details - Type: ${type}, Count: ${count}, Offset: ${valueOffset}`
-          );
 
           let dataOffset = count <= 4 ? i + 8 : valueOffset;
 
@@ -238,9 +223,6 @@ async function extractProofFromSharpMetadata(imageBuffer) {
             // Try to parse as JSON
             const cleanString = userCommentString.replace(/\0/g, "").trim();
             if (cleanString.includes("proof_type")) {
-              console.log(
-                "✅ Found proof_type in UserComment, parsing JSON..."
-              );
               const proof = JSON.parse(cleanString);
               return proof;
             }
@@ -269,7 +251,6 @@ async function extractProofFromSharpMetadata(imageBuffer) {
 
   // Method 3: Brute force search for JSON pattern
   try {
-    console.log("🔍 Brute force searching for JSON pattern...");
     const exifBytes = new Uint8Array(metadata.exif);
 
     // Look for opening brace followed by common proof fields
@@ -300,7 +281,6 @@ async function extractProofFromSharpMetadata(imageBuffer) {
             jsonString.includes("proof_type") &&
             jsonString.includes("ai_generated")
           ) {
-            console.log("✅ Found proof via brute force search");
             const proof = JSON.parse(jsonString);
             return proof;
           }
@@ -310,8 +290,6 @@ async function extractProofFromSharpMetadata(imageBuffer) {
   } catch (e) {
     console.log("❌ Method 3 failed:", e.message);
   }
-
-  console.log("❌ All extraction methods failed");
   throw new Error(
     "UserComment not found in EXIF data after trying all methods"
   );

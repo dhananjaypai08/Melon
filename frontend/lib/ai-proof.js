@@ -80,11 +80,9 @@ export class AIProofEngine {
   async embedProofIntoImage(base64Image, proof) {
     try {
       const imageBuffer = Buffer.from(base64Image, "base64");
-      console.log("Original image buffer length:", imageBuffer.length);
 
       // Create proof JSON string
       const proofJson = JSON.stringify(proof);
-      console.log("Proof JSON length:", proofJson.length);
 
       // Convert to JPEG first (without metadata - Sharp's metadata doesn't work)
       const jpegBuffer = await sharp(imageBuffer)
@@ -94,36 +92,24 @@ export class AIProofEngine {
         })
         .toBuffer();
 
-      console.log("JPEG buffer length (without EXIF):", jpegBuffer.length);
 
       // Now manually embed EXIF with UserComment
       const jpegWithProof = this.manuallyEmbedExif(jpegBuffer, proofJson);
 
-      console.log("Final JPEG with manual EXIF length:", jpegWithProof.length);
-
       // Test immediate extraction
       try {
-        console.log("🧪 Testing manual embedding...");
         const testMetadata = await sharp(jpegWithProof).metadata();
-        console.log("🧪 Manual test metadata has EXIF:", !!testMetadata.exif);
-        console.log(
-          "🧪 Manual test EXIF length:",
-          testMetadata.exif?.length || 0
-        );
 
         if (testMetadata.exif) {
           const exifString = testMetadata.exif.toString("utf8");
           const hasProof = exifString.includes("proof_type");
-          console.log("🧪 Manual EXIF contains proof_type:", hasProof);
         }
       } catch (testError) {
-        console.log("⚠️ Manual test failed:", testError.message);
       }
 
       console.log("✅ Manual EXIF embedding successful");
       return Buffer.from(jpegWithProof).toString("base64");
     } catch (error) {
-      console.error("Manual EXIF embedding error:", error);
       console.log("Returning original image without embedded proof");
       return base64Image;
     }

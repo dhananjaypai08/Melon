@@ -81,16 +81,16 @@ export default function Home() {
 
       <header className="relative z-30">
         <div className="mx-auto flex max-w-6xl items-start justify-between p py-9">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <Image src="/logo.png" alt="Melon logo" width={56} height={56} className="h-14 w-14" priority />
-            <p className="text-sm uppercase  text-white/50">Melon</p>
+            <p className="text-sm uppercase translate-y-[15%] text-white/80">Melon</p>
           </div>
       
         </div>
       </header>
 
       <main className="relative z-20">
-        <section className="px-6 pt-8 pb-20 sm:px-8 sm:pt-12 lg:px-10 lg:pt-18 xl:pt-20">
+        <section className="px-6 pt-8 pb-30 sm:px-8 sm:pt-12 lg:px-10 lg:pt-18 xl:pt-20">
           <div className="mx-auto grid max-w-6xl items-start gap-16 lg:grid-cols-[1.05fr_0.95fr]">
             <div className={`flex flex-col space-y-8 transition-all duration-700 ${isMounted ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'} lg:space-y-8`}>
               <div className="inline-flex self-start items-center gap-3 rounded-full border border-white/20 bg-white/5 px-5 py-2 text-sm text-white/70 backdrop-blur">
@@ -98,9 +98,9 @@ export default function Home() {
                 Live onchain verification
               </div>
               <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-[4.2rem] lg:leading-[1.05]">
-                <span className="block">Proof that your photo</span>
-                <span className="font-itc-garamond tracking-[-0.05em] text-[0.92em] text-white/90">
-                  was captured on the device you claim.
+                <span className="block">Proof that your photo was captured </span>
+                <span className="font-itc-garamond tracking-[-0.05em] text-[0.90em] text-white/90">
+                  on the device you claim.
                 </span>
               </h1>
               <p className="max-w-xl text-lg text-white/70 sm:text-xl">
@@ -121,17 +121,17 @@ export default function Home() {
                   </span>
                 </button>
               </div>
-              <div className="mt-50 flex flex-wrap gap-6 text-sm text-white/60 lg:mt-65 lg:flex-col lg:items-start lg:gap-6 lg:self-center lg:text-base lg:min-h-[240px] lg:justify-start">
+              <div className="self-center mt-40 flex flex-wrap justify-center gap-8 text-base text-white/60 lg:mt-45 lg:flex-col lg:items-start lg:gap-8 lg:text-lg lg:min-h-[320px] lg:justify-center">
                 {trustSignals.map((signal) => (
-                  <div key={signal.label} className="space-y-1">
-                    <p className="text-xs uppercase tracking-[0.3em] text-white/40">{signal.label}</p>
-                    <p className="text-2xl font-semibold text-white">{signal.value}</p>
-                    <p>{signal.caption}</p>
+                  <div key={signal.label} className="space-y-2 text-center lg:text-left">
+                    <p className="text-md uppercase tracking-[0.2em] text-white/45">{signal.label}</p>
+                    <p className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">{signal.value}</p>
+                    <p className="text-white/65">{signal.caption}</p>
                   </div>
                 ))}
               </div>
             </div>
-            <div className={`relative mx-auto w-full max-w-[1100px] space-y-35 transition-all duration-700 ${isMounted ? 'translate-y-0 opacity-100 delay-150' : 'translate-y-6 opacity-0'} lg:space-y-38`}>
+            <div className={`relative mx-auto w-full max-w-[1100px] space-y-35 transition-all duration-700 ${isMounted ? 'translate-y-[-2.5rem] opacity-100 delay-150' : 'translate-y-[-3.5rem] opacity-0'} lg:space-y-38`}>
               <div className="relative space-y-6">
                 
                 <div className="relative h-[560px] w-full sm:h-[620px] lg:h-[640px]">
@@ -140,30 +140,26 @@ export default function Home() {
               </div>
 
               <div className="relative mx-auto w-full max-w-[320px] overflow-hidden rounded-[24px] border border-white/15 bg-white/[0.06] p-3.5 backdrop-blur-xl shadow-[0_20px_40px_-20px_rgba(76,29,149,0.45)]">
-                <div className="mb-6 flex items-center justify-between text-xs uppercase tracking-[0.35em] text-white/40">
-                  <span>Verification preview</span>
-                  <span>01: Proof sheet</span>
-                </div>
-                <div className="aspect-[4/5] overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-500/60 via-purple-500/60 to-sky-500/60">
+                <div className="aspect-[4/5] overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-500/70 via-purple-500/40 to-sky-500/30">
                   <div className="flex h-full flex-col justify-between p-4">
                     <div className="flex items-center justify-between text-sm text-white/80">
                       <span className="rounded-full bg-white/15 px-4 py-1">Device match</span>
                       <span className="rounded-full bg-black/30 px-3 py-1 text-white/70">Nonce #48219</span>
                     </div>
                     <div className="space-y-4">
-                      <p className="text-2xl font-semibold">Capture confirmed ✅</p>
+                      <p className="text-xl font-semibold">Capture Confirmed</p>
                       <div className="grid grid-cols-2 gap-4 text-xs uppercase tracking-wide text-white/70">
                         <div>
-                          <p className="text-white/40">Device ID</p>
-                          <p className="text-base font-medium text-white">SONY-A7RV-118</p>
+                          <p className="text-white/60">Device ID</p>
+                          <p className="text-md font-medium text-white">SONY-A7RV-118</p>
                         </div>
                         <div>
-                          <p className="text-white/40">Firmware</p>
-                          <p className="text-base font-medium text-white">v2.4.6</p>
+                          <p className="text-white/60">Firmware</p>
+                          <p className="text-md font-medium text-white">v2.4.6</p>
                         </div>
                         <div>
-                          <p className="text-white/40">Timestamp</p>
-                          <p className="text-base font-medium text-white">2025·09·12 18:22 UTC</p>
+                          <p className="text-white/60">Timestamp</p>
+                          <p className="text-md font-medium text-white">2025·09·12 18:22 UTC</p>
                         </div>
                         <div>
                           <p className="text-white/40">Image hash</p>
@@ -180,7 +176,7 @@ export default function Home() {
                   </div>
                   <div className="flex items-center justify-between">
                     <span>Stake locked</span>
-                    <span className="font-medium text-white">1.00 ETH</span>
+                    <span className="font-medium text-white">0.01 ETH</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span>Status</span>

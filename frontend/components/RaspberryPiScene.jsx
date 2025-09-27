@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 export default function RaspberryPiScene() {
   const containerRef = useRef(null);
@@ -14,7 +15,7 @@ export default function RaspberryPiScene() {
     if (!container) return;
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color('#101a2e');
+    scene.background = null;
 
     const camera = new THREE.PerspectiveCamera(
       38,
@@ -28,9 +29,28 @@ export default function RaspberryPiScene() {
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.enabled = false;
+    renderer.setClearColor(0x000000, 0);
+    if (renderer.outputColorSpace !== undefined) {
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+    } else {
+      renderer.outputEncoding = THREE.sRGBEncoding;
+    }
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
+    renderer.physicallyCorrectLights = true;
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.08;
+    controls.enablePan = false;
+    controls.minDistance = 3.8;
+    controls.maxDistance = 7.5;
+    controls.maxPolarAngle = Math.PI / 2.05;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 0.45;
 
     const boardGroup = new THREE.Group();
     scene.add(boardGroup);
@@ -42,8 +62,6 @@ export default function RaspberryPiScene() {
         const model = gltf.scene;
         model.traverse((child) => {
           if (child.isMesh) {
-            child.castShadow = true;
-            child.receiveShadow = true;
             if (child.material) {
               child.material.needsUpdate = true;
             }
@@ -53,7 +71,7 @@ export default function RaspberryPiScene() {
         const box = new THREE.Box3().setFromObject(model);
         const size = box.getSize(new THREE.Vector3());
         const maxDim = Math.max(size.x, size.y, size.z) || 1;
-        const scale = 2.8 / maxDim;
+        const scale = 3.6 / maxDim;
         model.scale.setScalar(scale);
 
         box.setFromObject(model);
@@ -69,37 +87,44 @@ export default function RaspberryPiScene() {
       }
     );
 
-    const ambientLight = new THREE.AmbientLight('#9cb7ff', 0.55);
+    const ambientLight = new THREE.HemisphereLight('#a9c9ff', '#0c1324', 0.9);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight('#c3d4ff', 1.15);
-    keyLight.position.set(3.2, 6.5, 5.5);
-    keyLight.castShadow = true;
-    keyLight.shadow.bias = -0.0004;
+    const keyLight = new THREE.DirectionalLight('#f2f5ff', 1.35);
+    keyLight.position.set(3.2, 6.5, 5.1);
     scene.add(keyLight);
 
-    const rimLight = new THREE.PointLight('#7ad7c9', 1, 24);
-    rimLight.position.set(-5, 3, -6);
+    const rimLight = new THREE.PointLight('#6ae7d2', 1.35, 28);
+    rimLight.position.set(-5.2, 3.5, -5.8);
     scene.add(rimLight);
 
-    const fillLight = new THREE.DirectionalLight('#ffd2a8', 0.65);
-    fillLight.position.set(-2.5, 4.5, 3.5);
+    const fillLight = new THREE.DirectionalLight('#ffbfa1', 0.92);
+    fillLight.position.set(-2.2, 4.2, 3.9);
     scene.add(fillLight);
 
-    const ground = new THREE.Mesh(
-      new THREE.PlaneGeometry(20, 20),
-      new THREE.ShadowMaterial({ opacity: 0.25 })
-    );
-    ground.rotation.x = -Math.PI / 2;
-    ground.position.y = -0.12;
-    ground.receiveShadow = true;
-    scene.add(ground);
+    const accentLight = new THREE.SpotLight('#7f8cff', 0.75, 18, Math.PI / 6, 0.45, 1.2);
+    accentLight.position.set(1.8, 5.8, -3.2);
+    accentLight.target.position.set(0, 0.2, 0);
+    scene.add(accentLight);
+    scene.add(accentLight.target);
 
     boardGroup.rotation.x = -0.18;
     boardGroup.rotation.y = 0.6;
 
+    controls.target.set(0, 0.35, 0);
+    controls.update();
+
+    const handleControlStart = () => {
+      controls.autoRotate = false;
+    };
+    const handleControlEnd = () => {
+      controls.autoRotate = true;
+    };
+    controls.addEventListener('start', handleControlStart);
+    controls.addEventListener('end', handleControlEnd);
+
     const animate = () => {
-      boardGroup.rotation.y += 0.0028;
+      controls.update();
       renderer.render(scene, camera);
       animationRef.current = requestAnimationFrame(animate);
     };
@@ -122,6 +147,9 @@ export default function RaspberryPiScene() {
       resizeObserver.disconnect();
       container.removeChild(renderer.domElement);
       renderer.dispose();
+      controls.dispose();
+      controls.removeEventListener('start', handleControlStart);
+      controls.removeEventListener('end', handleControlEnd);
       scene.traverse((object) => {
         if (object.isMesh) {
           object.geometry.dispose();
@@ -135,5 +163,5 @@ export default function RaspberryPiScene() {
     };
   }, []);
 
-  return <div ref={containerRef} className="h-full w-full" />;
+  return <div ref={containerRef} className="relative z-10 h-full w-full" />;
 }

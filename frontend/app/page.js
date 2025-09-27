@@ -112,7 +112,7 @@ export default function Home() {
 
       <main className="relative z-20">
         <section className="px-6 pt-24 pb-20 sm:px-8 sm:pt-32 lg:px-10 lg:pt-36 xl:pt-40">
-          <div className="mx-auto grid max-w-6xl items-center gap-16 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="mx-auto grid max-w-6xl items-start gap-16 lg:grid-cols-[1.05fr_0.95fr]">
             <div className={`space-y-8 transition-all duration-700 ${isMounted ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'}`}>
               <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 px-5 py-2 text-sm text-white/70 backdrop-blur">
                 <span className="inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
@@ -120,7 +120,7 @@ export default function Home() {
               </div>
               <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-[4.2rem] lg:leading-[1.05]">
                 <span className="block">Proof that your photo</span>
-                <span className="font-itc-garamond text-[0.92em] text-white/90">
+                <span className="font-itc-garamond tracking-[-0.05em] text-[0.92em] text-white/90">
                   was captured on the device you claim.
                 </span>
               </h1>
@@ -148,13 +148,9 @@ export default function Home() {
               </div>
             </div>
             <div className={`relative mx-auto w-full max-w-[520px] space-y-8 transition-all duration-700 ${isMounted ? 'translate-y-0 opacity-100 delay-150' : 'translate-y-6 opacity-0'}`}>
-              <div className="relative overflow-hidden rounded-[32px] border border-white/15 bg-white/[0.07] p-6 backdrop-blur-xl shadow-[0_45px_80px_-30px_rgba(76,29,149,0.45)]">
-                <div className="absolute -inset-4 -z-10 rounded-[40px] bg-gradient-to-br from-purple-500/25 via-violet-500/20 to-indigo-500/20 blur-2xl"></div>
-                <div className="mb-6 flex items-center justify-between text-xs uppercase tracking-[0.35em] text-white/40">
-                  <span>Hardware spotlight</span>
-                  <span>Raspberry Pi rig</span>
-                </div>
-                <div className="relative h-[360px] w-full overflow-hidden rounded-[24px] border border-white/10 bg-gradient-to-tr from-[#111d30] via-[#0d1625] to-[#151f35]">
+              <div className="relative space-y-6">
+                
+                <div className="relative h-[420px] w-full sm:h-[460px]">
                   <RaspberryPiScene />
                 </div>
               </div>

@@ -1,7 +1,0 @@
-{
-  "env": {
-    "GOOGLE_GENERATIVE_AI_API_KEY": "@google-ai-key",
-    "AI_PROOF_PRIVATE_KEY": "@ai-proof-private-key",
-    "AI_PROOF_PUBLIC_KEY": "@ai-proof-public-key"
-  }
-}

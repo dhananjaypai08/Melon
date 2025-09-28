@@ -4,6 +4,8 @@ import { Ownable } from "@openzeppelin-contracts/contracts/access/Ownable.sol";
 import { IProofOfCapture } from "../interfaces/IProofOfCapture.sol";
 import { Constants } from "./constants.sol";
 import { ReentrancyGuard } from "@openzeppelin-contracts/contracts/utils/ReentrancyGuard.sol";
+import { ENS } from "ens-contracts/registry/ENS.sol";
+import { PublicResolver } from "ens-contracts/resolvers/PublicResolver.sol";
 
 contract ProofOfCapture is Ownable, IProofOfCapture, Constants, ReentrancyGuard {
     mapping(string => address) public hardwareIdOfOwner;
@@ -11,7 +13,26 @@ contract ProofOfCapture is Ownable, IProofOfCapture, Constants, ReentrancyGuard 
     mapping(address => bool) public isStaked;
     mapping(string => address) public ownerOfDevice;
 
-    constructor() Ownable(msg.sender) {}
+    PublicResolver public resolver;
+    ENS public ens;
+
+    constructor(address _ens, address _resolver) Ownable(msg.sender) {
+        ens = ENS(_ens);
+        resolver = PublicResolver(_resolver);
+    }
+
+    function linkDeviceToENS(
+        string memory deviceId,
+        string memory ensName,
+        bytes32 node
+    ) external {
+        if(ownerOfDevice[deviceId] != msg.sender){
+            revert NotOwner();
+        }
+        resolver.setAddr(node, msg.sender);
+
+        emit ENSNameLinked(deviceId, node, ensName);
+    }
 
     function stakeTokens(string memory deviceId) 
         external payable nonReentrant {

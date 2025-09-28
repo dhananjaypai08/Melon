@@ -8,12 +8,16 @@ import {
   useAccount,
   useWriteContract,
   useWaitForTransactionReceipt,
+  useEnsAvatar, useEnsName
 } from "wagmi";
 import {
   PROOF_OF_CAPTURE_ADDRESS,
   PROOF_OF_CAPTURE_ABI,
   STAKING_AMOUNT,
 } from "../../lib/contract";
+import namehash from "@ensdomains/eth-ens-namehash";
+import { readContract } from "viem/actions";
+import { hexToBool, hexToBytes } from "viem";
 
 export default function ApprovePage() {
   const router = useRouter();
@@ -24,12 +28,18 @@ export default function ApprovePage() {
   const [error, setError] = useState("");
 
   const { address, isConnected } = useAccount();
+  const { data: ensName } = useEnsName({ address });
+  const { data: ensAvatar } = useEnsAvatar({ name: ensName });
+
   const {
     data: hash,
     error: writeError,
     isPending,
     writeContract,
   } = useWriteContract();
+
+  const { data: name } = useEnsName({ address, chainId: 11155111 });
+  const { data: avatar } = useEnsAvatar({ name: ensName, chainId: 11155111 });
 
   const {
     isLoading: isConfirming,
@@ -78,7 +88,7 @@ export default function ApprovePage() {
     }
   }, [txError]);
 
-  const handleStake = async () => {
+  const handleStakeAndLinkENS = async () => {
     if (!deviceId.trim()) {
       setError("Please enter a device ID");
       return;
@@ -90,6 +100,11 @@ export default function ApprovePage() {
     setTxHash("");
 
     try {
+      const node = namehash.hash(ensName);
+      console.log("ENS Node:", node);
+      console.log("ENS Name:", ensName);
+      console.log("Avatar URL:", avatar);
+
       console.log("Starting transaction...");
       console.log("Device ID:", deviceId);
       console.log("Staking amount:", STAKING_AMOUNT);
@@ -101,6 +116,14 @@ export default function ApprovePage() {
         args: [deviceId],
         value: STAKING_AMOUNT,
       });
+
+      writeContract({
+          address: PROOF_OF_CAPTURE_ADDRESS,
+          abi: PROOF_OF_CAPTURE_ABI,
+          functionName: "linkDeviceToENS",
+          args: [deviceId, node, ensName],
+        });
+
     } catch (error) {
       console.error("Transaction failed:", error);
       setError("Transaction failed: " + (error.shortMessage || error.message));
@@ -176,6 +199,28 @@ export default function ApprovePage() {
               </ConnectButton.Custom>
             </div>
           </div>
+          {isConnected && (
+            <div className="flex items-center gap-4">
+              {ensAvatar && (
+                <img
+                  src={ensAvatar}
+                  alt="ENS Avatar"
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                />
+              )}
+              <div className="text-right">
+                {ensName && (
+                  <p className="text-white font-medium">{ensName}</p>
+                )}
+                <p className="text-white/60 text-sm">
+                  {address?.slice(0, 6)}...{address?.slice(-4)}
+                </p>
+              </div>
+            </div>
+          )}
+          <ConnectButton />
         </div>
       </header>
 
@@ -315,7 +360,7 @@ export default function ApprovePage() {
                 )}
 
                 <button
-                  onClick={handleStake}
+                  onClick={handleStakeAndLinkENS}
                   disabled={isLoading || isConfirming || !deviceId.trim()}
                   className="w-full rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-600 px-8 py-4 text-lg font-medium text-white shadow-lg shadow-purple-600/40 transition hover:scale-[1.01] hover:shadow-purple-500/60 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 >

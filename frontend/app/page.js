@@ -132,6 +132,15 @@ export default function Home() {
                     Verify a photo
                   </span>
                 </button>
+                <button
+                  className="group relative inline-flex h-12 overflow-hidden rounded-full p-[1px] text-base font-medium focus:outline-none focus:ring-2 focus:ring-purple-400/60 focus:ring-offset-2 focus:ring-offset-[#020512] transition hover:scale-[1.01]"
+                  onClick={() => router.push('/ens-resolver')}
+                >
+                  <span className="absolute inset-[-150%] animate-[spin_3.2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#6366f1_0%,#a855f7_50%,#22d3ee_100%)] opacity-75"></span>
+                  <span className="relative inline-flex h-full w-full items-center justify-center rounded-full border border-transparent bg-black/60 px-8 text-white/85 backdrop-blur-xl transition-colors group-hover:border-white/35 group-hover:text-white">
+                    Query Hardware ID on-chain
+                  </span>
+                </button>
               </div>
               <button
                 className="group relative mt-15 inline-flex w-full flex-col items-start justify-between gap-3 overflow-hidden rounded-[20px] border-2 border-cyan-100/40 bg-[#111a2d]/85 p-5 text-left shadow-[0_12px_45px_-18px_rgba(94,234,212,0.4)] transition hover:border-cyan-100/60 hover:bg-[#0c1425]/90 hover:shadow-[0_16px_55px_-20px_rgba(94,234,212,0.5)] sm:max-w-md"

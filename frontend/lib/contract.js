@@ -1,5 +1,5 @@
 export const PROOF_OF_CAPTURE_ADDRESS =
-  "0x56e2f444eb714D6Ad115B841AA81Aceb026233c1";
+  "0x66f0c4C9a21B78D4D92358D087176964982e1c21";
 
 // Complete ABI extracted from the deployed contract
 export const PROOF_OF_CAPTURE_ABI = [

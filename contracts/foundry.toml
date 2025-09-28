@@ -4,7 +4,10 @@ out = "out"
 libs = ["lib"]
 remappings = [
     "forge-std/=lib/forge-std/src/",
-    "@openzeppelin-contracts/=lib/openzeppelin-contracts/"
+    "@openzeppelin-contracts/=lib/openzeppelin-contracts/",
+    "ens-contracts/=lib/ens-contracts/contracts/",
+    "@ensdomains/buffer/=lib/buffer/",
+    "buffer/=lib/buffer/contracts/"
 ]
 
 optimizer = true
@@ -14,3 +17,15 @@ optimizer_runs = 200
 sepolia = "https://sepolia.infura.io/v3/2WCbZ8YpmuPxUtM6PzbFOfY5k4B"
 og_testnet="https://evmrpc-testnet.0g.ai/"
 og_mainnet="https://evmrpc.0g.ai/"
+
+# Network-specific configurations
+[profile.og_mainnet]
+gas_price = 3000000000  # 3 gwei
+priority_gas_price = 2000000000  # 2 gwei
+
+[profile.og_testnet]
+gas_price = 3000000000  # 3 gwei
+priority_gas_price = 2000000000  # 2 gwei
+
+[profile.sepolia]
+gas_price = 5000000000  # 5 gwei for Sepolia

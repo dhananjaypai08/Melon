@@ -117,12 +117,12 @@ export default function ApprovePage() {
         value: STAKING_AMOUNT,
       });
 
-      writeContract({
-          address: PROOF_OF_CAPTURE_ADDRESS,
-          abi: PROOF_OF_CAPTURE_ABI,
-          functionName: "linkDeviceToENS",
-          args: [deviceId, node, ensName],
-        });
+      // writeContract({
+      //     address: PROOF_OF_CAPTURE_ADDRESS,
+      //     abi: PROOF_OF_CAPTURE_ABI,
+      //     functionName: "linkDeviceToENS",
+      //     args: [deviceId, node, ensName],
+      //   });
 
     } catch (error) {
       console.error("Transaction failed:", error);

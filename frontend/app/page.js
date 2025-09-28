@@ -83,16 +83,21 @@ export default function Home() {
 
       <header className="relative z-30">
         <div className="mx-auto flex max-w-6xl items-start justify-between p py-9">
-          <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={() => router.push('/')}
+            className="flex items-center gap-1 transition hover:opacity-90"
+            aria-label="Go to landing page"
+          >
             <Image src="/logo.png" alt="Melon logo" width={56} height={56} className="h-14 w-14" priority />
             <p className="text-sm uppercase translate-y-[15%] text-white/80">Melon</p>
-          </div>
+          </button>
       
         </div>
       </header>
 
       <main className="relative z-20">
-        <section className="px-6 pt-8 pb-30 sm:px-8 sm:pt-12 lg:px-10 lg:pt-18 xl:pt-20">
+        <section className="px-6 pt-8 pb-36 sm:px-8 sm:pt-12 lg:px-10 lg:pt-18 xl:pt-20">
           <div className="mx-auto grid max-w-6xl items-start gap-16 lg:grid-cols-[1.05fr_0.95fr]">
             <div className={`flex flex-col space-y-8 transition-all duration-700 ${isMounted ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'} lg:space-y-8`}>
               <div className="inline-flex self-start items-center gap-3 rounded-full border border-white/20 bg-white/5 px-5 py-2 text-sm text-white/70 backdrop-blur">
@@ -100,14 +105,13 @@ export default function Home() {
                 Live onchain verification
               </div>
               <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-[4.2rem] lg:leading-[1.05]">
-                <span className="block">Proof that your photo was captured </span>
+                <span className="block">Prove that your photo was captured </span>
                 <span className="font-itc-garamond tracking-[-0.05em] text-[0.90em] text-white/90">
                   on the device you claim.
                 </span>
               </h1>
               <p className="max-w-xl text-lg text-white/70 sm:text-xl">
-                Upload a capture, and we map its hardware fingerprint, firmware, and metadata against a staked Proof of
-                Capture smart contract. Share a tamper-proof receipt the moment it verifies.
+              Upload a capture, Melon checks its hardware fingerprint, firmware, and EXIF against a staked Proof of Capture contract, then hands you a tamper-proof receipt.
               </p>
               <div className="flex flex-col gap-4 sm:flex-row">
                 <button
@@ -138,6 +142,23 @@ export default function Home() {
                   </span>
                 </button>
               </div>
+              <button
+                className="group relative mt-15 inline-flex w-full flex-col items-start justify-between gap-3 overflow-hidden rounded-[20px] border-2 border-cyan-100/40 bg-[#111a2d]/85 p-5 text-left shadow-[0_12px_45px_-18px_rgba(94,234,212,0.4)] transition hover:border-cyan-100/60 hover:bg-[#0c1425]/90 hover:shadow-[0_16px_55px_-20px_rgba(94,234,212,0.5)] sm:max-w-md"
+                onClick={() => router.push('/ai-generate')}
+              >
+                
+                <span className="inline-flex items-center gap-3 text-sm font-medium uppercase tracking-[0.25em] text-white/85">
+                  <span className="inline-flex h-2 w-2 rounded-full bg-cyan-200 shadow-[0_0_8px_rgba(165,243,252,0.7)]"></span>
+                  Generate with AI
+                </span>
+                <span className="text-lg font-semibold text-white/95">
+                  Spin up synthetic proofs with our model-first workflow.
+                </span>
+                <span className="inline-flex items-center gap-2 text-sm text-indigo-100 transition group-hover:translate-x-1">
+                  Explore studio
+                  <span aria-hidden="true">→</span>
+                </span>
+              </button>
               <div className="self-center mt-40 flex flex-wrap justify-center gap-8 text-base text-white/60 lg:mt-45 lg:flex-col lg:items-start lg:gap-8 lg:text-lg lg:min-h-[320px] lg:justify-center">
                 {trustSignals.map((signal) => (
                   <div key={signal.label} className="space-y-2 text-center lg:text-left">
@@ -148,16 +169,17 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            <div className={`relative mx-auto w-full max-w-[1100px] space-y-35 transition-all duration-700 ${isMounted ? 'translate-y-[-2.5rem] opacity-100 delay-150' : 'translate-y-[-3.5rem] opacity-0'} lg:space-y-38`}>
+            <div className={`relative mx-auto flex w-full max-w-[1100px] flex-col transition-all duration-700 ${isMounted ? 'translate-y-[4rem] opacity-100 delay-150' : 'translate-y-[14rem] opacity-0'}`}>
               <div className="relative space-y-6">
                 
-                <div className="relative h-[560px] w-full sm:h-[620px] lg:h-[640px]">
+                <div className="relative -mt-15 h-[480px] w-full sm:-mt-18 sm:h-[520px] lg:-mt-22 lg:h-[560px]">
                   <RaspberryPiScene />
                 </div>
               </div>
 
-              <div className="relative mx-auto w-full max-w-[320px] overflow-hidden rounded-[24px] border border-white/15 bg-white/[0.06] p-3.5 backdrop-blur-xl shadow-[0_20px_40px_-20px_rgba(76,29,149,0.45)]">
-                <div className="aspect-[4/5] overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-500/70 via-purple-500/40 to-sky-500/30">
+              <div className="relative mx-auto mt-80 w-full max-w-[320px] overflow-hidden rounded-[24px] border border-white/15 bg-white/[0.06] p-3.5 backdrop-blur-xl shadow-[0_20px_40px_-20px_rgba(76,29,149,0.45)] lg:mt-96">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-500/70 via-purple-500/40 to-sky-500/30">
+                  <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(255,255,255,0.35),rgba(255,255,255,0.05)_45%,transparent_65%)] opacity-70 mix-blend-screen"></div>
                   <div className="flex h-full flex-col justify-between p-4">
                     <div className="flex items-center justify-between text-sm text-white/80">
                       <span className="rounded-full bg-white/15 px-4 py-1">Device match</span>
@@ -212,14 +234,11 @@ export default function Home() {
           <div className="pointer-events-none absolute inset-x-[10%] top-[-25%] h-[360px] rounded-full bg-gradient-to-r from-purple-500/20 via-indigo-500/20 to-sky-500/20 blur-[120px]"></div>
           <div className="relative mx-auto max-w-6xl">
             <div className={`mx-auto max-w-3xl text-center transition-all duration-700 ${isMounted ? 'translate-y-0 opacity-100 delay-100' : 'translate-y-6 opacity-0'}`}>
-              <p className="text-sm uppercase tracking-[0.4em] text-white/40">Why photoproof</p>
+              <p className="text-sm uppercase tracking-[0.4em] text-white/40">Why Melon</p>
               <h2 className="mt-4 text-3xl font-semibold text-white sm:text-4xl md:text-5xl">
                 A trust layer designed for journalists, marketplaces, and creative networks.
               </h2>
-              <p className="mt-6 text-lg text-white/70">
-                Inspired by clean, cinematic storytelling. Every section breathes, every card feels tactile, and every
-                interaction is ready for the verification workflow you described.
-              </p>
+
             </div>
             <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:gap-8">
               {featureCards.map((feature) => (

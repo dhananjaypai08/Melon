@@ -1,0 +1,203 @@
+import React from "react";
+import {
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+  Bug,
+  Eye,
+  Sparkles,
+  Bot,
+} from "lucide-react";
+
+export default function AIVerificationResults({
+  verificationResult,
+  debugInfo,
+  proofData,
+  exifDebugInfo,
+  loading,
+}) {
+  if (loading) {
+    return (
+      <div className="rounded-[32px] border border-blue-400/20 bg-blue-400/5 p-8 backdrop-blur-xl">
+        <div className="flex items-center justify-center gap-4 text-blue-300">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-300/30 border-t-blue-300"></div>
+          <span className="text-lg font-medium">
+            Verifying AI image authenticity...
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-8">
+      {/* Main Verification Result */}
+      {verificationResult && (
+        <div
+          className={`rounded-[32px] border p-8 backdrop-blur-xl ${
+            verificationResult.success
+              ? "border-emerald-400/20 bg-emerald-400/5"
+              : "border-red-400/20 bg-red-400/5"
+          }`}
+        >
+          <div className="flex items-center gap-4 mb-6">
+            {verificationResult.success ? (
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-400/20">
+                <Bot className="h-8 w-8 text-emerald-400" />
+              </div>
+            ) : (
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-red-400/20">
+                <XCircle className="h-8 w-8 text-red-400" />
+              </div>
+            )}
+            <div>
+              <h3
+                className={`text-2xl font-semibold ${
+                  verificationResult.success
+                    ? "text-emerald-300"
+                    : "text-red-300"
+                }`}
+              >
+                {verificationResult.success
+                  ? "AI Image Verified"
+                  : "Verification Failed"}
+              </h3>
+              <p
+                className={`text-lg ${
+                  verificationResult.success
+                    ? "text-emerald-200"
+                    : "text-red-200"
+                }`}
+              >
+                {verificationResult.message}
+              </p>
+            </div>
+          </div>
+
+          {verificationResult.success && (
+            <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/10 p-6">
+              <h4 className="text-lg font-medium text-emerald-300 mb-4 flex items-center gap-2">
+                <Sparkles className="h-5 w-5" />
+                AI Generation Confirmed
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-white/60">
+                    Cryptographic Signature:
+                  </span>
+                  <span className="text-emerald-300 font-medium">Valid</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-white/60">AI Model Attestation:</span>
+                  <span className="text-emerald-300 font-medium">Verified</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-white/60">Image Integrity:</span>
+                  <span className="text-emerald-300 font-medium">Intact</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-white/60">Proof Type:</span>
+                  <span className="text-emerald-300 font-medium">
+                    AI Generated
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* AI Generation Metadata */}
+      {proofData && (
+        <div className="rounded-[32px] border border-white/15 bg-white/[0.06] p-8 backdrop-blur-xl">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-purple-400/20">
+              <Bot className="h-6 w-6 text-purple-400" />
+            </div>
+            <h3 className="text-xl font-semibold text-white">
+              AI Generation Metadata
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                <p className="text-xs uppercase tracking-[0.3em] text-white/40 mb-2">
+                  Generation Details
+                </p>
+                <div className="space-y-3">
+                  <div>
+                    <span className="text-white/60 text-sm">AI Model:</span>
+                    <p className="text-white font-medium">
+                      {proofData.ai_model?.split("/").pop() ||
+                        proofData.ai_model}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-white/60 text-sm">Generated At:</span>
+                    <p className="text-white font-medium">
+                      {new Date(proofData.timestamp).toLocaleString()}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-white/60 text-sm">Proof Type:</span>
+                    <p className="text-white font-medium">
+                      {proofData.proof_type}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-white/60 text-sm">Nonce:</span>
+                    <p className="text-white font-medium font-mono text-xs">
+                      {proofData.nonce}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                <p className="text-xs uppercase tracking-[0.3em] text-white/40 mb-2">
+                  Original Prompt
+                </p>
+                <div className="bg-black/20 p-3 rounded-lg">
+                  <p className="text-white text-sm leading-relaxed">
+                    "{proofData.prompt}"
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                <p className="text-xs uppercase tracking-[0.3em] text-white/40 mb-2">
+                  Cryptographic Data
+                </p>
+                <div className="space-y-3">
+                  <div>
+                    <span className="text-white/60 text-sm">Image Hash:</span>
+                    <p className="text-white font-mono text-xs break-all bg-white/5 p-2 rounded-lg mt-1">
+                      {proofData.image_hash}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-white/60 text-sm">
+                      Digital Signature:
+                    </span>
+                    <p className="text-white font-mono text-xs break-all bg-white/5 p-2 rounded-lg mt-1">
+                      {proofData.signature?.slice(0, 64)}...
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-white/60 text-sm">Public Key:</span>
+                    <p className="text-white font-mono text-xs break-all bg-white/5 p-2 rounded-lg mt-1">
+                      {proofData.public_key_b64?.slice(0, 64)}...
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

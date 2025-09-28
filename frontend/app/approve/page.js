@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import {
   useAccount,
@@ -19,6 +20,7 @@ import { readContract } from "viem/actions";
 import { hexToBool, hexToBytes } from "viem";
 
 export default function ApprovePage() {
+  const router = useRouter();
   const [deviceId, setDeviceId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [txHash, setTxHash] = useState("");
@@ -147,7 +149,12 @@ export default function ApprovePage() {
       {/* Header */}
       <header className="relative z-30">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-8 sm:px-8 lg:px-10">
-          <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => router.push('/')}
+            className="flex cursor-pointer items-center gap-3 transition hover:opacity-90"
+            aria-label="Go to landing page"
+          >
             <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 backdrop-blur">
               <Image src="/logo.png" alt="Melon logo" width={32} height={32} className="h-8 w-8" />
             </span>
@@ -158,6 +165,38 @@ export default function ApprovePage() {
               <p className="text-lg font-semibold tracking-tight text-white">
                 Device Approval
               </p>
+            </div>
+          </button>
+          <div className="group relative">
+            <div className="pointer-events-none absolute inset-0 scale-105 rounded-[20px] bg-gradient-to-r from-indigo-500/25 via-sky-500/25 to-emerald-500/25 blur-2xl opacity-0 transition group-hover:opacity-80"></div>
+            <div className="relative inline-flex items-center gap-3 rounded-[18px] border border-white/20 bg-white/[0.06] px-4 py-2 text-sm font-medium text-white/80 backdrop-blur-xl transition group-hover:border-white/40 group-hover:text-white">
+              <span className="inline-flex h-2 w-2 rounded-full bg-emerald-300 shadow-[0_0_8px_rgba(110,231,183,0.8)]"></span>
+              <span className="uppercase tracking-[0.2em] text-xs text-white/60 group-hover:text-white/80">
+                Wallet
+              </span>
+              <div className="h-6 w-px bg-white/15"></div>
+              <ConnectButton.Custom>
+                {({ account, chain, openConnectModal }) => (
+                  <button
+                    onClick={openConnectModal}
+                    className="inline-flex items-center gap-2 rounded-[14px] border border-white/10 bg-black/40 px-3 py-1 text-sm font-semibold text-white transition hover:border-white/30 hover:bg-black/55"
+                  >
+                    {account ? (
+                      <>
+                        <span className="text-white/80">{account.displayName}</span>
+                        <span className="rounded-full border border-white/15 bg-white/10 px-2 py-0.5 text-[10px] uppercase tracking-[0.18em] text-white/60">
+                          {chain?.name ?? 'Wallet'}
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Connect Wallet</span>
+                        <span className="text-xs text-white/60">→</span>
+                      </>
+                    )}
+                  </button>
+                )}
+              </ConnectButton.Custom>
             </div>
           </div>
           {isConnected && (

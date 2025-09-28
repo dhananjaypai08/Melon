@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+echo "Hardware Details"
+./generate_hardware_uuid.sh
 # -------------------------
 # Config
 # -------------------------

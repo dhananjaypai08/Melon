@@ -13,7 +13,7 @@ contract ProofOfCaptureScript is Script {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(deployerPrivateKey);
 
-        proofOfCapture = new ProofOfCapture();
+        proofOfCapture = new ProofOfCapture(0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e, 0xE99638b40E4Fff0129D56f03b55b6bbC4BBE49b5);
 
         vm.stopBroadcast();
         console.log("Contract deployed on : ", address(proofOfCapture));

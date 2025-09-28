@@ -1,12 +1,21 @@
 export const PROOF_OF_CAPTURE_ADDRESS =
-  "0x56e2f444eb714D6Ad115B841AA81Aceb026233c1";
+  "0x50302BDcc8DcB8DDbf5A09636Ed9A22E05F65849";
 
 // Complete ABI extracted from the deployed contract
 export const PROOF_OF_CAPTURE_ABI = [
     {
       "type": "constructor",
       "inputs": [
-        
+        {
+          "name": "_ens",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "_resolver",
+          "type": "address",
+          "internalType": "address"
+        }
       ],
       "stateMutability": "nonpayable"
     },
@@ -36,6 +45,21 @@ export const PROOF_OF_CAPTURE_ABI = [
           "name": "",
           "type": "address",
           "internalType": "address"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "ens",
+      "inputs": [
+        
+      ],
+      "outputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "contract ENS"
         }
       ],
       "stateMutability": "view"
@@ -145,6 +169,31 @@ export const PROOF_OF_CAPTURE_ABI = [
     },
     {
       "type": "function",
+      "name": "linkDeviceToENS",
+      "inputs": [
+        {
+          "name": "deviceId",
+          "type": "string",
+          "internalType": "string"
+        },
+        {
+          "name": "ensName",
+          "type": "string",
+          "internalType": "string"
+        },
+        {
+          "name": "node",
+          "type": "bytes32",
+          "internalType": "bytes32"
+        }
+      ],
+      "outputs": [
+        
+      ],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
       "name": "owner",
       "inputs": [
         
@@ -187,6 +236,21 @@ export const PROOF_OF_CAPTURE_ABI = [
         
       ],
       "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "resolver",
+      "inputs": [
+        
+      ],
+      "outputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "contract PublicResolver"
+        }
+      ],
+      "stateMutability": "view"
     },
     {
       "type": "function",
@@ -252,6 +316,31 @@ export const PROOF_OF_CAPTURE_ABI = [
         
       ],
       "stateMutability": "nonpayable"
+    },
+    {
+      "type": "event",
+      "name": "ENSNameLinked",
+      "inputs": [
+        {
+          "name": "deviceId",
+          "type": "string",
+          "indexed": true,
+          "internalType": "string"
+        },
+        {
+          "name": "node",
+          "type": "bytes32",
+          "indexed": true,
+          "internalType": "bytes32"
+        },
+        {
+          "name": "ensName",
+          "type": "string",
+          "indexed": false,
+          "internalType": "string"
+        }
+      ],
+      "anonymous": false
     },
     {
       "type": "event",
@@ -351,6 +440,13 @@ export const PROOF_OF_CAPTURE_ABI = [
           "type": "uint256",
           "internalType": "uint256"
         }
+      ]
+    },
+    {
+      "type": "error",
+      "name": "NotOwner",
+      "inputs": [
+        
       ]
     },
     {

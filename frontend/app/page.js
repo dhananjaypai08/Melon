@@ -128,6 +128,15 @@ export default function Home() {
                     Verify a photo
                   </span>
                 </button>
+                <button
+                  className="group relative inline-flex h-12 overflow-hidden rounded-full p-[1px] text-base font-medium focus:outline-none focus:ring-2 focus:ring-purple-400/60 focus:ring-offset-2 focus:ring-offset-[#020512] transition hover:scale-[1.01]"
+                  onClick={() => router.push('/ens-resolver')}
+                >
+                  <span className="absolute inset-[-150%] animate-[spin_3.2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#6366f1_0%,#a855f7_50%,#22d3ee_100%)] opacity-75"></span>
+                  <span className="relative inline-flex h-full w-full items-center justify-center rounded-full border border-transparent bg-black/60 px-8 text-white/85 backdrop-blur-xl transition-colors group-hover:border-white/35 group-hover:text-white">
+                    Query Hardware ID on-chain
+                  </span>
+                </button>
               </div>
               <div className="self-center mt-40 flex flex-wrap justify-center gap-8 text-base text-white/60 lg:mt-45 lg:flex-col lg:items-start lg:gap-8 lg:text-lg lg:min-h-[320px] lg:justify-center">
                 {trustSignals.map((signal) => (

@@ -1,0 +1,18 @@
+{
+  "functions": {
+    "app/api/generate/route.js": {
+      "maxDuration": 30000
+    },
+    "app/api/ai-proof/route.js": {
+      "maxDuration": 60000
+    },
+    "app/api/og-storage/route.js": {
+      "maxDuration": 120000
+    }
+  },
+  "env": {
+    "GOOGLE_GENERATIVE_AI_API_KEY": "@google-ai-key",
+    "AI_PROOF_PRIVATE_KEY": "@ai-proof-private-key",
+    "AI_PROOF_PUBLIC_KEY": "@ai-proof-public-key"
+  }
+}

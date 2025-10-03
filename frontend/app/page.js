@@ -169,7 +169,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="relative mx-auto mt-12 w-full max-w-[320px] overflow-hidden rounded-[24px] border border-white/15 bg-white/[0.06] p-3.5 backdrop-blur-xl shadow-[0_20px_40px_-20px_rgba(76,29,149,0.45)] lg:mt-16">
+              <div className="relative mx-auto mt-12 w-full max-w-[320px] overflow-hidden rounded-[24px] border border-white/15 bg-white/[0.06] p-3.5 backdrop-blur-xl shadow-[0_20px_40px_-20px_rgba(76,29,149,0.45)] lg:mt-75">
                 <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-500/70 via-purple-500/40 to-sky-500/30">
                   <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(255,255,255,0.35),rgba(255,255,255,0.05)_45%,transparent_65%)] opacity-70 mix-blend-screen"></div>
                   <div className="flex h-full flex-col justify-between p-4">
